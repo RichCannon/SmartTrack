@@ -1,0 +1,19 @@
+.tab {
+   height: 3.7em;
+   border-radius: 20px 0px 0px 20px;
+   display: flex;
+   align-items: center;
+   margin-left: 25%; 
+   padding: 0px 20px;
+}
+
+.activeTab {
+  background-color: #6AC7BE; 
+}
+
+.tabText {
+   margin-left: .5em ;
+   font-size: 18px;
+   font-family: 'Poppins';
+   color: #fff;
+}

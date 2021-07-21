@@ -1,0 +1,23 @@
+.container {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   background: #6AC7BE;
+   box-shadow: 0px 4px 20px rgba(0, 5, 56, 0.1);
+   border-radius: 20px;
+   height: 100%
+}
+
+.label {
+   color: #4E4B66;
+   -webkit-touch-callout: none; /* iOS Safari */
+   -webkit-user-select: none;   /* Chrome/Safari/Opera */
+   -khtml-user-select: none;    /* Konqueror */
+   -moz-user-select: none;      /* Firefox */
+   -ms-user-select: none;       /* Internet Explorer/Edge */
+   user-select: none; 
+   font-family: 'Poppins';
+  
+   font-weight: 600;
+   font-size: 16px;
+}

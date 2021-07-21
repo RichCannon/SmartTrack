@@ -1,0 +1,113 @@
+.container {
+   padding: 1.2em;
+   background-color: #F6F6FF;
+}
+
+.nameAndReset {
+   display: flex;
+   justify-content: space-between;
+}
+
+.contentWrapper {
+   border-top: 1px solid #C0E7E5;
+   padding-top: 1em;
+}
+
+.name {
+   font-family: 'Poppins';
+   font-style: normal;
+   font-weight: 500;
+   font-size: 18px;
+}
+
+.reset {
+   border: 1px solid #6AC7BE;
+   box-sizing: border-box;
+   border-radius: 20px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   padding: 0% 1em;
+}
+
+.resetText {
+   font-family: 'Poppins';
+   font-style: normal;
+   font-weight: 500;
+   font-size: 12px;
+   color: #6AC7BE;
+   margin: 0%;
+}
+
+.jobName {
+   color: #4F4F4F;
+   font-family: 'Poppins';
+   font-style: normal;
+   font-weight: 500;
+   font-size: 14px;
+   margin-bottom: 1em;
+}
+
+.lineWrapper {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
+
+.iterator {
+   display: flex;
+   justify-content: space-between;
+   flex: .5
+}
+
+.plusMinus {
+   font-family: 'Poppins';
+   font-style: normal;
+   font-weight: 500;
+   font-size: 18px;
+}
+
+.iteratorText {
+   font-family: 'Poppins';
+   font-style: normal;
+   font-weight: 500;
+   font-size: 18px;
+   color: #FC7E55;
+}
+
+.stopLine {
+   border: 1px solid #FC7E55;
+   box-sizing: border-box;
+   border-radius: 20px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   padding: 0% 1em;
+}
+
+.stopLineText {
+   font-family: 'Poppins';
+   font-style: normal;
+   font-weight: 500;
+   font-size: 12px;
+   color: #FC7E55;
+   margin: 0%;
+}
+
+.inLine {
+   font-family: 'Poppins';
+   font-style: normal;
+   font-weight: 500;
+   font-size: 14px;
+   color: #969696;
+   margin: 0%;
+   align-self: center;
+}
+
+.statusCards {
+   margin-top: 2em;
+  padding-bottom: 1em;
+   display: flex;
+   white-space: nowrap;
+   overflow-y:auto;
+}

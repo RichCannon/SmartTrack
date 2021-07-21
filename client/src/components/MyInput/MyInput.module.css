@@ -1,0 +1,50 @@
+.container {
+  flex-direction: column;
+  display: flex;
+  align-self: normal;
+}
+
+.input {
+   font-family: 'Poppins';
+   font-style: normal;
+   font-weight: normal;
+   font-size: 14px;
+   border: 1px solid #DADADA;
+   box-sizing: border-box;
+   border-radius: 20px;
+   outline: none;
+   padding: .8em 1em;
+   color: #14142B;
+   background-color: transparent;
+}
+
+.disabledInput {
+   color: #DADADA; 
+}
+
+.focusedInput {
+   border: 1px solid #14142B;;
+}
+
+.inputError {
+   border-bottom: 1px red solid;
+}
+
+.label {
+   font-family: 'Poppins';
+   font-style: normal;
+   font-weight: normal;
+   font-size: 12px;
+   margin-left: 1em;
+   color: #212121;
+}
+
+.error {
+   color: red;
+   font-size: 12px;
+   height: 20px;
+}
+
+.opacity0 {
+   opacity: 0
+}
