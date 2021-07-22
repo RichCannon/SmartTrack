@@ -1,0 +1,44 @@
+.container {
+   display: flex;
+   flex-direction: column;
+}
+
+.routeWrapper {
+   display: flex;
+   justify-content: space-between;
+   margin: .5em 0;
+}
+
+.routeTab {
+   flex: 1;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   padding: 1em .0px;
+   font-family: 'Poppins';
+   font-weight: bold;
+   flex-direction: column;
+}
+
+.routeTabActive {
+   color: #6AC7BE;
+}
+
+.underLine {
+   border: 1px solid #6AC7BE;
+   width: 1.5em;
+   box-shadow: 0px 3px 4px rgba(106, 199, 190, 0.3);
+}
+
+.content {
+   padding: 0px 1em;
+}
+
+.button {
+   padding: .5em 0px;
+}
+
+.buttonText {
+   color: #fff;
+   font-size: 16px;
+}

@@ -1,23 +1,45 @@
-import { FC, ReactElement } from "react"
+import { FC, ReactElement, useState } from "react"
 
 import s from './DrawerTab.module.css'
 import { RoutesT } from "../../types/types"
+import { NavLink } from "react-router-dom"
 
 type DrawerTab = {
-   route?: RoutesT | string
-   onClick: (r: any) => void
+   routeTo?: RoutesT
+   label: string
+   onClick?: () => void
    currentRoute?: RoutesT
    icon: (isPressed: boolean) => ReactElement
    color?: string
+   preventDefault?: boolean
 }
 
-const DrawerTab: FC<DrawerTab> = ({ route, onClick, currentRoute, icon, color }) => {
+const DrawerTab: FC<DrawerTab> = ({ routeTo, label, onClick, icon, color,preventDefault }) => {
+
+   const [isActive, setIsActive] = useState(false)
+
+   const onPress = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+      if (onClick) {
+         preventDefault && e.preventDefault() 
+         onClick()
+      }
+   }
+
    return (
-      <div onClick={() => onClick(route)} className={`${s.tab} ${route === currentRoute ? s.activeTab : ``}`}>
-         {icon(route === currentRoute)}
-         <p style={{ color }} className={s.tabText}>{route}</p>
-      </div>
+      <NavLink to={`/${routeTo}`}
+         className={`${s.tab}`}
+         onClick={onPress}
+         isActive={(match) => {
+            setIsActive(!!match)
+            return !!match
+         }}
+         activeClassName={`${s.tab} ${s.activeTab}`}
+      >
+         {icon(isActive)}
+         <p style={{ color }} className={s.tabText}>{label}</p>
+      </NavLink>
    )
 }
+
 
 export default DrawerTab

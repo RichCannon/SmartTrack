@@ -2,29 +2,24 @@ import express from 'express'
 import cors from 'cors'
 import { graphqlHTTP } from 'express-graphql'
 import { buildSchema } from "type-graphql";
-import "reflect-metadata";
+import "reflect-metadata"; // For using experemental class decorators (Typegoose, Typegraphql)
 import mongoose from "mongoose";
 
 import { UsersResolver } from './resolvers/UsersResolver';
 import { RoomsResolver } from './resolvers/RoomsResolver';
+import { StatusResolver } from './resolvers/StatusResolver';
 
-  
-// const users = [
-//    {
-//       id: 1,
-//       role: `admin`,
-//       email: `admin@gmail.com `,
-//       name: `Admin1 Admin2`,
-//    }
-// ]
 
-const MONGO_URI = 'mongodb+srv://admin:admin@cluster0.getmm.mongodb.net/SmartTrack?retryWrites=true&w=majority'
 
+const MONGO_PASSWORD = `admin`
+const DB_NAME = `SmartTrack`
+
+const MONGO_URI = `mongodb+srv://admin:${MONGO_PASSWORD}@cluster0.getmm.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`
 const PORT = process.env.PORT || 5000
 
 const main = async () => {
    const schema = await buildSchema({
-      resolvers: [UsersResolver, RoomsResolver],
+      resolvers: [UsersResolver, RoomsResolver, StatusResolver],
       emitSchemaFile: true,
       validate: false,
    });
@@ -37,11 +32,7 @@ const main = async () => {
 
 
    const app = express()
-
-
    app.use(cors())
-
-
 
    app.use('/graphql', graphqlHTTP({
       schema,

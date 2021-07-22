@@ -15,10 +15,18 @@ export class Rooms {
    @prop()
    @Field(() => ID)
    status: string
-   
+
    @prop()
    @Field()
    name: string
+
+   @prop({ required: false })
+   @Field(() => ID, { nullable: true })
+   description: string
+
+   @prop({ required: false })
+   @Field(() => ID, { nullable: true })
+   color: string
 }
 
 export const RoomsModel = getModelForClass(Rooms)

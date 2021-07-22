@@ -1,15 +1,21 @@
+import { getModelForClass,prop } from "@typegoose/typegoose";
 import { Field, ID, ObjectType } from "type-graphql";
 
 
 
 @ObjectType()
-export class Rooms {
+export class Status {
    @Field(() => ID)
-   id: string
+   _id: string
 
    @Field()
-   color: string
+   @prop({ required: true, unique: true })
+   color!: string
 
    @Field()
-   description: string
+   @prop({ required: true, unique: true })
+   description!: string
 }
+
+
+export const StatusModel = getModelForClass(Status)

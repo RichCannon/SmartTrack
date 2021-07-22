@@ -68,8 +68,8 @@
 }
 
 .bigCircle {
-   background: rgba(242, 215, 117, 0.19);
-   border: 2px solid #F2D775;
+   background: rgba(221, 221, 221, 0.19);
+   border: 2px solid rgba(221, 221, 221);
    box-sizing: border-box;
    display: flex;
    justify-content: center;
@@ -101,4 +101,5 @@
    font-weight: 500;
    font-size: 12px;
    margin-bottom: 1em;
+   text-align: center;
 }

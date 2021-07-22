@@ -1,15 +1,10 @@
 
 import { ObjectType, Field, ID } from "type-graphql";
-
 import { prop, getModelForClass } from "@typegoose/typegoose";
-import { Rooms } from "./Rooms";
 import { Ref } from "typegoose";
 
-
-// TODO: add @prop to @Field when I will be adding typegoose
-
-
-export type RoleT = `admin` | `doctor` | `assistant` | `receptionist`
+import { RoleT } from "../types/types";
+import { Rooms } from "./Rooms";
 
 
 
@@ -31,9 +26,13 @@ export class Users {
    @prop()
    role: RoleT
 
-   @Field(() => String,{ defaultValue: null })
+   @Field()
+   @prop({ required: false })
+   specialization: string
+
+   @Field(() => [ID], { defaultValue: [] })
    @prop({ ref: Rooms, })
-   rooms!: Ref<Rooms>
+   rooms!: [Ref<Rooms>]
 }
 
 

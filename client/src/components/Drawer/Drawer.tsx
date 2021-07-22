@@ -48,14 +48,18 @@ const Drawer = () => {
                <div className={s.line}></div>
             </div>
          </div>
-         {routesArr.map(d => (<DrawerTab
-            key={`DRAWER_TAB_${d.route}`}
-            icon={d.icon}
-            route={d.route}
-            currentRoute={route}
-            onClick={setRoute} />))}
+         {routesArr.map(d => (
+            <DrawerTab
+               onClick={(() => setIsExpanded(false))}
+               key={`DRAWER_TAB_${d.route}`}
+               icon={d.icon}
+               label={d.route}
+               routeTo={d.route.toLowerCase() as RoutesT}
+               currentRoute={route}
+            />)
+         )}
          <div className={s.signOutWrapper}>
-            <DrawerTab color={`#8484D8`} route={`Sign Out`} onClick={onLogOutPress} icon={() => <LogOutIcon />} />
+            <DrawerTab preventDefault color={`#8484D8`} label={`Sign Out`} onClick={onLogOutPress} icon={LogOutIcon} />
          </div>
       </div>
    )

@@ -1,15 +1,25 @@
+import { FC } from 'react'
+
+import { DoctorT } from '../../graphql/dashboard'
 import RoomCard from '../RoomCard/RoomCard'
 import s from './DashboardCard.module.css'
 
-const DashboardCard = () => {
+type DashboardCard = {
+
+} & DoctorT
+
+const DashboardCard: FC<DashboardCard> = ({ name, specialization, rooms = [] }) => {
+
+
+
    return (
       <div className={s.container}>
          <div className={s.nameAndReset}>
-            <div className={s.name}>{`Benedict Cumberbatch`}</div>
+            <div className={s.name}>{name}</div>
             <div className={s.reset}><p className={s.resetText}>{`Reset`}</p></div>
          </div>
          <div className={s.jobName}>
-            {`Therapist`}
+            {specialization}
          </div>
          <div className={s.contentWrapper}>
             <div className={s.lineWrapper}>
@@ -24,10 +34,7 @@ const DashboardCard = () => {
                </div>
             </div>
             <div className={s.statusCards}>
-               <RoomCard /> 
-               <RoomCard /> 
-               <RoomCard /> 
-               <RoomCard />
+               {rooms ? rooms.map((d, idx) => <RoomCard key={`ROOM_CARD_${idx}`} {...d} />) : []}
             </div>
          </div>
       </div>
