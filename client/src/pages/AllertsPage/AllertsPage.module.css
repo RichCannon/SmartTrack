@@ -1,3 +1,22 @@
 .container {
-   
+   padding: 1em;
+   background-color: #F6F6FF;
+   flex: 1
 }
+
+
+.button {
+   padding: .5em 0px;
+}
+
+.buttonText {
+   color: #fff;
+   font-size: 16px;
+}
+
+.statusCard {
+      margin-top: 1em;
+}
+
+
+.statusCardWrapper {}

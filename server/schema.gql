@@ -35,9 +35,9 @@ type Mutation {
 }
 
 type Query {
-  getAllDoctors: [Users!]!
   getAllStatuses: [Status!]!
   getAllUsers: [Users!]!
+  getByRole(role: String!): [Users!]!
   getRooms(id: String!): [Rooms!]!
   getUser(id: String!): Users!
 }
@@ -64,6 +64,7 @@ type Status {
 
 type Users {
   _id: ID!
+  docRooms: [Rooms!]
   email: String!
   name: String!
   role: String!

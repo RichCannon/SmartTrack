@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client";
+import { RoleT } from "../types/types";
 
 
 export type RoomT = {
@@ -13,16 +14,26 @@ export type DoctorT = {
    specialization: string
 }
 
-export type GetAllDoctorsResponse = {
-   getAllDoctors: DoctorT[]
+export type GetByRoleResponse = {
+   getByRole: (DoctorT & { docRooms: RoomT[] })[]
 }
 
-export const GET_ALL_DOCTORS = gql`
-  query {
-  getAllDoctors {
+export type GetByRolePayload = {
+   role: RoleT
+}
+
+export const GET_USER_BY_ROLE = gql`
+  query Users($role: String!) {
+   getByRole(role: $role) {
     name,
-    rooms,
-    specialization
+    specialization,
+    docRooms {
+      name
+      color,
+      description,
+      _id,
+      ownerId
+    }
   }
 }
 `

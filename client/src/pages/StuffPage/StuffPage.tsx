@@ -48,11 +48,16 @@ const StuffPage: FC<StuffPage> = () => {
       },
    ]
 
-   const onEditClick = () => [
-
-   ]
+   const onEditClick = () => {
+      console.log(`onEditClick`)
+   }
 
    const onDeleteClick = () => {
+      console.log(`onDeleteClick`)
+
+   }
+
+   const onDoctorClick = () => {
 
    }
 
@@ -70,7 +75,10 @@ const StuffPage: FC<StuffPage> = () => {
             <MyButton label={`Add new`} onButtonClick={onButtonClick} className={s.button} labelClassName={s.buttonText} />
             <div>
                {stuffdata.map((d, idx) => (
-                  <StuffCard onDeleteClick={onDeleteClick}
+                  <StuffCard
+                     key={`STUFF_CARD_${idx}`}
+                     onDoctorClick={route === `Assistans` ? onDoctorClick : undefined}
+                     onDeleteClick={onDeleteClick}
                      onEditClick={onEditClick}
                      number={idx + 1}
                      {...d} />

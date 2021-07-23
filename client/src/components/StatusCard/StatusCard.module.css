@@ -1,0 +1,48 @@
+.container {
+   display: flex;
+   background: #FFFFFF;
+   box-shadow: 0px 4px 20px rgba(178, 178, 233, 0.19);
+   border-radius: 20px 0px;
+
+}
+
+
+.idxWrapper {
+   border-radius: 20px 0px;
+   background: #6ac7be49;
+   flex: .3;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   font-weight: 900;
+   font-size: 16px;
+}
+
+.description {
+   padding: 1em 0;
+   flex: 2;
+   margin-left: .5em;
+   font-weight: bold;
+}
+
+.circleWrapper {
+   display: flex;
+   flex: .5;
+   justify-content: center;
+   align-items: center;
+}
+
+.circle {
+   width: 1em;
+   height: 1em;
+   border-radius: 50%;
+}
+
+.editIcon {
+   flex: .5;
+   justify-content: center;
+   align-items: center;
+   display: flex;
+
+}
+

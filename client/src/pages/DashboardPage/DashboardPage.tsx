@@ -2,20 +2,25 @@
 import { useQuery } from '@apollo/client'
 
 import DashboardCard from '../../components/DashboardCard/DashboardCard'
-import { GetAllDoctorsResponse, GET_ALL_DOCTORS } from '../../graphql/dashboard'
+import { GetByRoleResponse, GetByRolePayload, GET_USER_BY_ROLE } from '../../graphql/dashboard'
+import { RoleT } from '../../types/types'
 import s from './DashboardPage.module.css'
 
 
 const DashboardPage = () => {
 
-   const { loading, error, data } = useQuery<GetAllDoctorsResponse>(GET_ALL_DOCTORS)
+   const { loading, error, data } = useQuery<GetByRoleResponse, GetByRolePayload>(GET_USER_BY_ROLE, {
+      variables: { role: `doctor` }
+   })
+
+   console.log(data)
 
    return (
       <div className={s.container}>
          {loading
             ? `Loading...`
             : data
-               ? data.getAllDoctors.map((d, idx) => <DashboardCard key={`DashboardCard_${idx}`} {...d} />)
+               ? data.getByRole.map((d, idx) => <DashboardCard key={`DashboardCard_${idx}`} {...d} />)
                : []
          }
       </div>

@@ -1,14 +1,14 @@
 import { FC } from 'react'
 
-import { DoctorT } from '../../graphql/dashboard'
+import { DoctorT, RoomT } from '../../graphql/dashboard'
 import RoomCard from '../RoomCard/RoomCard'
 import s from './DashboardCard.module.css'
 
 type DashboardCard = {
-
+   docRooms: RoomT[]
 } & DoctorT
 
-const DashboardCard: FC<DashboardCard> = ({ name, specialization, rooms = [] }) => {
+const DashboardCard: FC<DashboardCard> = ({ name, specialization, docRooms }) => {
 
 
 
@@ -34,7 +34,7 @@ const DashboardCard: FC<DashboardCard> = ({ name, specialization, rooms = [] }) 
                </div>
             </div>
             <div className={s.statusCards}>
-               {rooms ? rooms.map((d, idx) => <RoomCard key={`ROOM_CARD_${idx}`} {...d} />) : []}
+               {docRooms ? docRooms.map((d, idx) => <RoomCard key={`ROOM_CARD_${idx}`} {...d} />) : []}
             </div>
          </div>
       </div>

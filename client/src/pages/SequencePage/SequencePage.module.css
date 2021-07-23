@@ -1,3 +1,110 @@
 .container {
+   padding: 1em;
+   background-color: #F6F6FF;
+   flex: 1
+}
+
+.title {
+   font-weight: 900;
+   margin: 1em 0px;
+}
+
+.select {
+   border: 1px solid #D3D3FF;
+   box-sizing: border-box;
+   border-radius: 20px;
+   padding: 1em;
+   background-color: transparent;
+   width: 80%;
+   outline: 0px;
+   font-family: 'Poppins';
+   font-style: normal;
+   font-weight: bold
+}
+
+.dndContainer {
+   display: flex;
+   flex-wrap: wrap;
+   border: 1px dashed #6AC7BE;
+   margin: 1em 0px;
+   background-color: #FBFBFF;
+   padding: 1em 0;
+   border-radius: 3px;
+}
+
+
+.dndCenterText {
+   width: 100%;
+   height: 100%;
+   justify-content: center;
+   align-items: center;
+   display: flex;
+   margin: 3em 0;
+}
+
+.dndContWithRoom {
+
+   justify-content: flex-start;
+   align-items: flex-start;
+}
+
+.dndText {
+   color: #6AC7BE;
+   font-family: 'Poppins';
+   font-style: normal;
+}
+
+.dndTitle {
+   font-weight: 900;
+   margin: 1em 0px;
+}
+
+.dndCardWrapper {
+   display: flex;
+   flex-flow: row wrap;
+}
+
+/* .dndCardWrapper::after {
+   content: "";
+   width: 66%
+} */
+
+.circlePlusWrapper {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   flex-direction: column;
+}
+
+.circlePlus {
+   width: 2.5em;
+   height: 2.5em;
+   border-radius: 50%;
+   background: #6AC7BE;
+   justify-content: center;
+   align-items: center;
+   display: flex;
    
+}
+
+.plus {
+   width: 1.5em;
+   height: 2px;
+   background-color: #fff;
+}
+
+.minus {
+   width: 2px;
+   height: 1.5em;
+   background-color: #fff;
+   position: absolute;
+}
+
+.addText {
+   color: #6AC7BE;
+   text-align: center;
+   font-size: 13px;
+   margin: 0px .8em;
+   margin-top: .3em;
+
 }

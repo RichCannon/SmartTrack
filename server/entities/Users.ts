@@ -33,6 +33,9 @@ export class Users {
    @Field(() => [ID], { defaultValue: [] })
    @prop({ ref: Rooms, })
    rooms!: [Ref<Rooms>]
+
+   @Field(() => [Rooms], { nullable: true })
+   docRooms: [Rooms]
 }
 
 
