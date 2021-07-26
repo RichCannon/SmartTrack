@@ -1,4 +1,4 @@
-import { Field,  InputType } from "type-graphql"
+import { Field,  ID,  InputType } from "type-graphql"
 
 import { Status } from "../entities/Status"
 
@@ -11,5 +11,13 @@ export class CreateStatusInput implements Partial<Status> {
 
    @Field()
    description!: string
+
+}
+
+
+@InputType()
+export class UpdateStatusInput extends CreateStatusInput {
+   @Field(() => ID)
+   _id: string
 
 }

@@ -1,16 +1,16 @@
 import { FC } from 'react'
-import cssStyle from './Preloader.module.css'
+import s from './Preloader.module.css'
 
 
 type PreloaderProps = {
    style?: React.CSSProperties
+   size?: string
+   color?: string
 }
 
-const Preloader: FC<PreloaderProps> = ({ style }) => {
+const Preloader: FC<PreloaderProps> = ({ size = `4em`, color = `#212155`, style = {} }) => {
    return (
-      <div style={style} className={cssStyle.container}>
-         <div className={cssStyle.ldsRing}><div></div><div></div><div></div><div></div></div>
-      </div>
+      <div className={s.ldsCircle}><div style={{ ...style, width: size, height: size, background: color }}></div></div>
    )
 }
 

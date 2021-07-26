@@ -13,12 +13,12 @@ type MyButtonProps = {
 }
 
 
-const MyButton: FC<MyButtonProps> = ({ label, onButtonClick, isDisabled, isLoading = false, className = ``, labelClassName = `` }) => {
+const MyButton: FC<MyButtonProps> = ({  label, onButtonClick, isDisabled, isLoading = false, className = ``, labelClassName = `` }) => {
 
    return (
       <div key={`myButton`} onClick={isDisabled ? () => 1 : onButtonClick} className={`${style.container} ${className}`} >
          {isLoading
-            ? <Preloader style={{ transform: `scale(.5)` }} />
+            ? <Preloader size={`1.6em`} color={`#fff`} />
             : <div className={`${style.label} ${labelClassName}`}>{label}</div>
          }
       </div>

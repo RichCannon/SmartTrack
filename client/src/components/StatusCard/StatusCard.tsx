@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import { UpdateStatusPaylaod } from '../../graphql/allerts'
 import EditIcon from '../StuffCard/assets/EditIcon'
 import s from './StatusCard.module.css'
 
@@ -16,10 +17,9 @@ const StatusCard: FC<StatusCard> = ({ idx, description, color, onEditClick }) =>
          <div className={s.description}>{description}</div>
          <div className={s.circleWrapper}>
             <div className={s.circle}
-               onClick={onEditClick}
                style={{ background: `${color}33`, border: `1px solid ${color}` }} />
          </div>
-         <div className={s.editIcon}><EditIcon /></div>
+         <div onClick={onEditClick} className={s.editIcon}><EditIcon /></div>
       </div>
    )
 }

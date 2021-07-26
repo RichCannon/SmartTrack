@@ -1,7 +1,7 @@
-import { Arg, Resolver, Mutation,Query } from "type-graphql";
+import { Arg, Resolver, Mutation, Query } from "type-graphql";
 
 import { StatusModel, Status } from "../entities/Status";
-import { CreateStatusInput } from "../types/status.input";
+import { CreateStatusInput, UpdateStatusInput } from "../types/status.input";
 
 @Resolver()
 export class StatusResolver {
@@ -11,10 +11,29 @@ export class StatusResolver {
       return await StatusModel.find()
    }
 
-   @Mutation(() => Boolean)
+   @Mutation(() => Status)
    async createStatus(@Arg("data") data: CreateStatusInput) {
-      (await StatusModel.create(data)).save()
-      return true
+      try {
+         return (await StatusModel.create(data)).save()
+          
+      } catch (e) {
+         console.log(e)
+      }
+      return
+
+   }
+
+   @Mutation(() => Status)
+   async updateStatus(@Arg("data") { _id, color, description }: UpdateStatusInput) {
+      try {
+         await StatusModel.updateOne({ _id }, {
+            $set: { color, description }
+         })
+         return await StatusModel.findOne({ _id })
+      } catch (e) {
+         console.log(e)
+      }
+      return
    }
 
 }

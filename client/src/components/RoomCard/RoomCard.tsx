@@ -17,15 +17,15 @@ const RoomCard: FC<RoomT> = ({ description, name, color }) => {
          </div>
          <div className={s.bigCircleWrapper}>
             <div className={s.bigCircle} style={{
-               background: `${color}33`, // 20% opacity === 33 in hex
-               border: `2px solid ${color}`
+               background: color ? `${color}33` : `#DDDDDD33`, // 20% opacity === 33 in hex
+               border: color ? `2px solid ${color}` : `2px solid #DDDDDD`
             }}>
                <div className={s.number}>
-                  {name ? name[0] : ``}
+                  {description ? description[0] : ``}
                </div>
             </div>
          </div>
-         <div className={s.status}>{`${description} ▼`}</div>
+         <div className={s.status}>{`${description ? description : `Empty`} ▼`}</div>
       </div>
    )
 }

@@ -1,0 +1,58 @@
+.container {
+   display: flex;
+   width: 95vw;
+   background: #FFFFFF;
+   box-shadow: 0px 4px 20px rgba(32, 43, 93, 0.12);
+   border-radius: 20px;
+   flex-direction: column;
+   padding: 1.2em;
+   box-sizing: border-box;
+}
+
+.cross {
+   display: flex;
+   justify-content: flex-end;
+}
+
+.title {
+   display: flex;
+   justify-content: center;
+   font-weight: bold;
+   margin: 1em 0;
+}
+
+.circlesContainer {
+   flex-wrap: wrap;
+   display: flex;
+}
+
+.circleWrapper {
+   width: calc((95vw - (2* 1.2em)) / 4);
+   height: calc((95vw - (2 * 1.2em)) / 4);
+   justify-content: center;
+   align-items: center;
+   display: flex;
+}
+
+.circle {
+   border-radius: 50%;
+   width: 80%;
+   height: 80%;
+}
+
+.clickedCircle {}
+
+.colorTitle {
+   font-weight: normal;
+   font-size: 12px;
+}
+
+.buttonLabel {
+   color: #fff
+}
+
+.button {
+   height: auto;
+   padding: .5em;
+   margin-top: 1em;
+}

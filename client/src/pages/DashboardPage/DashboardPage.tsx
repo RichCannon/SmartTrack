@@ -2,8 +2,8 @@
 import { useQuery } from '@apollo/client'
 
 import DashboardCard from '../../components/DashboardCard/DashboardCard'
+import Preloader from '../../components/Preloader/Preloader'
 import { GetByRoleResponse, GetByRolePayload, GET_USER_BY_ROLE } from '../../graphql/dashboard'
-import { RoleT } from '../../types/types'
 import s from './DashboardPage.module.css'
 
 
@@ -13,12 +13,11 @@ const DashboardPage = () => {
       variables: { role: `doctor` }
    })
 
-   console.log(data)
 
    return (
       <div className={s.container}>
          {loading
-            ? `Loading...`
+            ? <Preloader />
             : data
                ? data.getByRole.map((d, idx) => <DashboardCard key={`DashboardCard_${idx}`} {...d} />)
                : []

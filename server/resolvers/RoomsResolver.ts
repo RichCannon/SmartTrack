@@ -12,6 +12,7 @@ export class RoomsResolver {
       return await RoomsModel.find({ ownerId: id })
    }
 
+
    @Mutation(() => Boolean)
    async createRoom(@Arg("data") data: CreateRoomInput) {
       (await RoomsModel.create(data)).save()

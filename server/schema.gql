@@ -29,9 +29,10 @@ input CreateUserInput {
 type Mutation {
   addRoomToDoctor(data: AddRoomToDoctor!): Boolean!
   createRoom(data: CreateRoomInput!): Boolean!
-  createStatus(data: CreateStatusInput!): Boolean!
+  createStatus(data: CreateStatusInput!): Status!
   createUser(data: CreateUserInput!): Boolean!
   setRoomStatus(data: SetRoomStatusInput!): Rooms!
+  updateStatus(data: UpdateStatusInput!): Status!
 }
 
 type Query {
@@ -57,6 +58,12 @@ input SetRoomStatusInput {
 }
 
 type Status {
+  _id: ID!
+  color: String!
+  description: String!
+}
+
+input UpdateStatusInput {
   _id: ID!
   color: String!
   description: String!
