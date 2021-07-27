@@ -26,9 +26,13 @@ export class Users {
    @prop()
    role: RoleT
 
-   @Field()
+   @Field({nullable: true})
    @prop({ required: false })
-   specialization: string
+   specialization?: string
+
+   @Field()
+   @prop()
+   phoneNum: string
 
    @Field(() => [ID], { defaultValue: [] })
    @prop({ ref: Rooms, })

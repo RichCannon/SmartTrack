@@ -1,6 +1,6 @@
 import { FC } from 'react'
+import { RoomsStuff } from '../../graphql/stuff'
 
-import { RoomsStuff } from '../../graphql/allerts'
 import DeleteIcon from './assets/DeleteIcon'
 import DoctorIcon from './assets/DoctorIcon'
 import EditIcon from './assets/EditIcon'
@@ -11,7 +11,7 @@ type StuffCard = {
    name: string,
    email: string
    phoneNum: string
-   rooms: RoomsStuff[],
+   rooms: RoomsStuff[] | null
    onEditClick: () => void
    onDeleteClick: () => void
    onDoctorClick?: () => void

@@ -9,8 +9,8 @@ export class Status {
    _id: string
 
    @Field()
-   @prop({ required: true })
-   color!: string
+   @prop({ required: true, unique: false })
+   color: string
 
    @Field()
    @prop({ required: true, unique: true })

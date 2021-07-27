@@ -1,8 +1,10 @@
+import { Types } from "mongoose";
 import { Arg, Mutation, Query, Resolver } from "type-graphql";
+import { RoomsModel } from "../entities/Rooms";
 
 import { Users, UsersModel } from "../entities/Users";
 import { RoleT } from "../types/types";
-import { AddRoomToDoctor, CreateUserInput } from "../types/users-input";
+import { AddRoomToDoctorInput, CreateUserInput, UpdateUserInput } from "../types/users-input";
 
 
 @Resolver()
@@ -33,8 +35,7 @@ export class UsersResolver {
             $match: {
                role
             }
-         }
-         , {
+         }, {
             $lookup: {
                from: 'rooms',
                localField: 'rooms',
@@ -50,20 +51,48 @@ export class UsersResolver {
       return await UsersModel.findById(id)
    }
 
-   @Mutation(() => Boolean)
+   @Mutation(() => Users)
    async createUser(@Arg("data") data: CreateUserInput) {
-      (await UsersModel.create(data)).save()
+      return (await UsersModel.create(data)).save()
+   }
+
+   @Mutation(() => Boolean)
+   async addRoomToDoctor(@Arg("data") { roomId, doctorId }: AddRoomToDoctorInput) {
+      await UsersModel.updateOne({ _id: doctorId }, {
+         $push: {
+            rooms:roomId
+         }
+      })
+      await RoomsModel.updateOne({ _id: roomId }, {
+         $set: {
+            ownerId: Types.ObjectId(doctorId) 
+         }
+      })
       return true
    }
 
    @Mutation(() => Boolean)
-   async addRoomToDoctor(@Arg("data") { roomId, doctorId }: AddRoomToDoctor) {
-      await UsersModel.updateOne({ _id: doctorId }, {
-         $push: {
-            rooms: roomId
-         }
-      })
-      return true
+   async deleteUser(@Arg("_id") _id: string) {
+      try {
+         await UsersModel.deleteOne({ _id })
+         return true
+      } catch (e) {
+         console.error(e)
+         return false
+      }
+   }
+
+   @Mutation(() => Boolean)
+   async updateUser(@Arg("data") { _id, ...restData }: UpdateUserInput) {
+      try {
+         await UsersModel.updateOne({ _id }, {
+            $set: restData
+         })
+         return true
+      } catch (e) {
+         console.error(e)
+         return false
+      }
    }
 
 }

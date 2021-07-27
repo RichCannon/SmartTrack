@@ -10,14 +10,16 @@ export type RoomT = {
    ownerId: string
 }
 
-export type DoctorT = {
+export type UserT = {
+   _id: string
    name: string
    specialization: string
    email: string
+   phoneNum: string
 }
 
 export type GetByRoleResponse = {
-   getByRole: (DoctorT & { docRooms: RoomT[] })[]
+   getByRole: (UserT & { docRooms: RoomT[] })[]
 }
 
 export type GetByRolePayload = {
@@ -30,6 +32,7 @@ export const GET_USER_BY_ROLE = gql`
     name,
     specialization,
     email,
+    phoneNum,
     docRooms {
       name
       color,

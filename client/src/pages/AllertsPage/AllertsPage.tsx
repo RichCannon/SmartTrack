@@ -32,7 +32,7 @@ const updateStatusUpdateCache = (
    })
 }
 
-const createStatusUpdateCache = (
+const createStatusUpdateCache = (   
    cache: ApolloCache<CreateStatusResponse>,
    { data }: FetchResult<CreateStatusResponse, Record<string, any>, Record<string, any>>) => {
 

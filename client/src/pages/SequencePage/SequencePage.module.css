@@ -10,16 +10,7 @@
 }
 
 .select {
-   border: 1px solid #D3D3FF;
-   box-sizing: border-box;
-   border-radius: 20px;
-   padding: 1em;
-   background-color: transparent;
    width: 80%;
-   outline: 0px;
-   font-family: 'Poppins';
-   font-style: normal;
-   font-weight: bold
 }
 
 .dndContainer {

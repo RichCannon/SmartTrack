@@ -5,6 +5,9 @@ import { DragDropContext, Droppable, DropResult } from 'aligned-rbd'
 
 import DndRoomCard from '../../components/DndRoomCard/DndRoomCard'
 import s from './SequencePage.module.css'
+import MySelect from '../../components/MySelect/MySelect'
+import { useQuery } from '@apollo/client'
+import { GetDoctorSequencePayload, GetDoctorSequenceResponse, GET_DOCTORS_SEQUENCE } from '../../graphql/sequence'
 
 export type DndRoomCardDataT = {
    idx: number
@@ -13,7 +16,7 @@ export type DndRoomCardDataT = {
 }
 
 
-const doctors = [`Alex Sample`, `Alex Sample2`, `Alex Sample3`]
+//const doctors = [`Alex Sample`, `Alex Sample2`, `Alex Sample3`]
 
 const roomCard = new Array(20).fill(null).map((d, idx) => ({
    idx,
@@ -27,14 +30,23 @@ const roomCard = new Array(20).fill(null).map((d, idx) => ({
 const FIELD_TO_ADD_ROOM = `fieldToAddRoom`
 const FIELD_WITH_AVAIB_ROOMS = `fieldWithAvailableRooms`
 
+type CurrentDocT = {
+   _id: string
+   name: string
+}
+
 
 const SequencePage = () => {
-   const [currentDoc, setCurrentDoc] = useState(doctors[0])
+   const [currentDoc, setCurrentDoc] = useState<CurrentDocT>({ _id: ``, name: `` })
 
    const [roomsList, setRoomsList] = useState(roomCard)
    const [chosenRooms, setChosenRooms] = useState<typeof roomCard>([])
 
-  //   const [currentDndCard, setCurrentDndCard] = useState<typeof roomCard[0] | null>(null)
+   const { data, loading, error } =
+      useQuery<GetDoctorSequenceResponse, GetDoctorSequencePayload>(GET_DOCTORS_SEQUENCE, { variables: { role: `doctor` } })
+
+
+   //   const [currentDndCard, setCurrentDndCard] = useState<typeof roomCard[0] | null>(null)
 
    const onChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
       setCurrentDoc(e.currentTarget.value)
@@ -91,11 +103,11 @@ const SequencePage = () => {
 
             onDragEnd={onDrop}>
             <div className={s.title}>{`Choose a Doctor`}</div>
-            <select onChange={onChange} value={currentDoc} className={s.select}>
-               {doctors.map(doc => <option value={doc} key={doc}>{doc}</option>)}
-            </select>
+            <div className={s.select}>
+               <MySelect onChange={onChange} value={currentDoc} options={data?.getByRole} />
+            </div>
             <Droppable direction={`grid`} droppableId={FIELD_TO_ADD_ROOM}>
-               {(provided: any, snapshot: any) => <div
+               {(provided: any) => <div
                   {...provided.droppableProps}
                   ref={provided.innerRef}
                   className={s.dndContainer}>

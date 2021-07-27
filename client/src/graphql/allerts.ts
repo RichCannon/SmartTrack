@@ -1,6 +1,5 @@
 import { gql } from "@apollo/client"
 
-import { RoomT, DoctorT } from "./dashboard"
 
 export type StatusT = {
 
@@ -23,28 +22,7 @@ export const GET_ALL_STATUSES = gql`
    }
 `
 
-export type RoomsStuff = Omit<RoomT, "descriptionu">
 
-export type ByRoleResponseStuff = {
-   getByRole: (DoctorT & { docRooms: RoomsStuff[] })[]
-}
-
-
-export const USER_BY_ROLE_STUFF_PAGE = gql`
-  query Users($role: String!) {
-   getByRole(role: $role) {
-    name,
-    specialization,
-    email,
-    docRooms {
-      color,
-      name,
-      _id,
-      ownerId
-    }
-  }
-}
-`
 export type CreateStatusPaylaod = {
    data: {
 

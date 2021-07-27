@@ -58,7 +58,6 @@ const Drawer = () => {
                   icon={d.icon}
                   label={d.route}
                   routeTo={d.route.toLowerCase() as RoutesT}
-               // currentRoute={route}
                />)
             )}
             <div className={s.signOutWrapper}>

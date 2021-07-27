@@ -16,13 +16,22 @@ export class CreateUserInput implements Partial<Users> {
    @Field()
    role: RoleT
 
+   @Field()
+   phoneNum: string
+
    @Field({ nullable: true })
-   specialization: string
+   specialization?: string
 
 }
 
 @InputType()
-export class AddRoomToDoctor {
+export class UpdateUserInput extends CreateUserInput {
+   @Field()
+   _id: string
+}
+
+@InputType()
+export class AddRoomToDoctorInput {
    @Field(() => ID)
    doctorId: string
 

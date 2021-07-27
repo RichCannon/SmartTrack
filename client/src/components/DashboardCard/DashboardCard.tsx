@@ -1,12 +1,12 @@
 import { FC } from 'react'
 
-import { DoctorT, RoomT } from '../../graphql/dashboard'
+import { UserT, RoomT } from '../../graphql/dashboard'
 import RoomCard from '../RoomCard/RoomCard'
 import s from './DashboardCard.module.css'
 
 type DashboardCard = {
    docRooms: RoomT[]
-} & DoctorT
+} & UserT
 
 const DashboardCard: FC<DashboardCard> = ({ name, specialization, docRooms }) => {
 

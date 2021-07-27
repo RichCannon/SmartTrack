@@ -1,3 +1,4 @@
+
 import { Arg, Resolver, Query, Mutation } from "type-graphql";
 
 import { Rooms, RoomsModel } from "../entities/Rooms";
@@ -9,6 +10,7 @@ export class RoomsResolver {
 
    @Query(() => [Rooms])
    async getRooms(@Arg("id") id: string) {
+
       return await RoomsModel.find({ ownerId: id })
    }
 

@@ -3,7 +3,7 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
-input AddRoomToDoctor {
+input AddRoomToDoctorInput {
   doctorId: ID!
   roomId: ID!
 }
@@ -22,17 +22,20 @@ input CreateStatusInput {
 input CreateUserInput {
   email: String!
   name: String!
+  phoneNum: String!
   role: String!
   specialization: String
 }
 
 type Mutation {
-  addRoomToDoctor(data: AddRoomToDoctor!): Boolean!
+  addRoomToDoctor(data: AddRoomToDoctorInput!): Boolean!
   createRoom(data: CreateRoomInput!): Boolean!
   createStatus(data: CreateStatusInput!): Status!
-  createUser(data: CreateUserInput!): Boolean!
+  createUser(data: CreateUserInput!): Users!
+  deleteUser(_id: String!): Boolean!
   setRoomStatus(data: SetRoomStatusInput!): Rooms!
   updateStatus(data: UpdateStatusInput!): Status!
+  updateUser(data: UpdateUserInput!): Boolean!
 }
 
 type Query {
@@ -45,11 +48,11 @@ type Query {
 
 type Rooms {
   _id: ID!
-  color: ID
-  description: ID
+  color: String
+  description: String
   name: String!
   ownerId: String!
-  status: ID!
+  status: String!
 }
 
 input SetRoomStatusInput {
@@ -69,12 +72,22 @@ input UpdateStatusInput {
   description: String!
 }
 
+input UpdateUserInput {
+  _id: String!
+  email: String!
+  name: String!
+  phoneNum: String!
+  role: String!
+  specialization: String
+}
+
 type Users {
   _id: ID!
   docRooms: [Rooms!]
   email: String!
   name: String!
+  phoneNum: String!
   role: String!
   rooms: [ID!]
-  specialization: String!
+  specialization: String
 }
