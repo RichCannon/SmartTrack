@@ -30,12 +30,13 @@ export class UsersResolver {
 
    @Query(() => [Users])
    async getByRole(@Arg(`role`) role: RoleT) {
-      return await UsersModel.aggregate([
+      const data =  await UsersModel.aggregate([
          {
             $match: {
                role
             }
-         }, {
+         },
+         {
             $lookup: {
                from: 'rooms',
                localField: 'rooms',
@@ -43,7 +44,18 @@ export class UsersResolver {
                as: 'docRooms'
 
             }
-         }])
+         },
+         {
+            $lookup: {
+               from: 'status',
+               localField: 'docRooms.status',
+               foreignField: '_id',
+               as: 'statusData'
+            }
+         }
+      ])
+      console.log(`DATA:`,data)
+      return data
    }
 
    @Query(() => Users, { nullable: false })
@@ -60,12 +72,12 @@ export class UsersResolver {
    async addRoomToDoctor(@Arg("data") { roomId, doctorId }: AddRoomToDoctorInput) {
       await UsersModel.updateOne({ _id: doctorId }, {
          $push: {
-            rooms:roomId
+            rooms: roomId
          }
       })
       await RoomsModel.updateOne({ _id: roomId }, {
          $set: {
-            ownerId: Types.ObjectId(doctorId) 
+            ownerId: Types.ObjectId(doctorId)
          }
       })
       return true

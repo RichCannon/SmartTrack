@@ -14,7 +14,6 @@ export class StatusResolver {
    @Mutation(() => Status)
    async createStatus(@Arg("data") data: CreateStatusInput) {
       try {
-         console.log(data)
          return (await StatusModel.create(data)).save()
           
       } catch (e) {

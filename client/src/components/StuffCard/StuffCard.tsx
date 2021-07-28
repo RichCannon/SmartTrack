@@ -1,6 +1,7 @@
 import { FC } from 'react'
-import { RoomsStuff } from '../../graphql/stuff'
 
+import { StatusT } from '../../graphql/allerts'
+import { RoomsStuff } from '../../graphql/stuff'
 import DeleteIcon from './assets/DeleteIcon'
 import DoctorIcon from './assets/DoctorIcon'
 import EditIcon from './assets/EditIcon'
@@ -12,6 +13,7 @@ type StuffCard = {
    email: string
    phoneNum: string
    rooms: RoomsStuff[] | null
+   statusData: StatusT[]
    onEditClick: () => void
    onDeleteClick: () => void
    onDoctorClick?: () => void
@@ -23,6 +25,7 @@ const StuffCard: FC<StuffCard> = ({
    email,
    phoneNum,
    rooms,
+   statusData,
    onEditClick,
    onDeleteClick,
    onDoctorClick }) => {
@@ -49,8 +52,10 @@ const StuffCard: FC<StuffCard> = ({
                      <div>{`Rooms: ${rooms.map(d => d.name).join(`,`)}`}</div>
                   </div>
                   <div className={s.statusesWrapper}>
-                     {rooms.map((d,idx) => (
-                        <div key={`STATUSES_${idx}`} className={s.statuses} style={{ background: d.color ? d.color : `#ddd` }} />
+                     {rooms.map((d, idx) => (
+                        <div key={`STATUSES_${idx}`}
+                           className={s.statuses}
+                           style={{ background: statusData[idx].color ? statusData[idx].color : `#ddd` }} />
                      ))}
                   </div>
                </>

@@ -13,6 +13,7 @@
     "@types/react-beautiful-dnd": "^13.1.1",
     "@types/react-dom": "^17.0.0",
     "@types/react-router-dom": "^5.1.8",
+    "@types/react-select": "^4.0.17",
     "aligned-rbd": "^13.0.0-aligned0.0.3mod",
     "graphql": "^15.5.1",
     "react": "^17.0.2",
@@ -21,6 +22,7 @@
     "react-dom": "^17.0.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "react-select": "^4.3.1",
     "typescript": "^4.1.2",
     "web-vitals": "^1.0.1"
   },

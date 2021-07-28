@@ -10,6 +10,7 @@ import Preloader from '../../components/Preloader/Preloader'
 import Modal from '../../components/Modal/Modal'
 import AddUserModal from '../../components/AddUserModal/AddUserModal'
 import { ByRoleResponseStuff, CreateUserPayload, CreateUserResponse, CREATE_USER, DeleteUserPayload, DeleteUserResponse, DELETE_USER, UpdateUserPayload, UpdateUserResponse, UPDATE_USER, USER_BY_ROLE_STUFF_PAGE } from '../../graphql/stuff'
+import { OptionsT } from '../../components/MySelect/MySelect'
 
 type StuffPage = {
 
@@ -104,8 +105,10 @@ const StuffPage: FC<StuffPage> = () => {
       setName(value)
    }
 
-   const onRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setRole(e.currentTarget.value as RoleT)
+   const onRoleChange = (payload: OptionsT | null) => {
+      if (payload) {
+         setRole(payload.value as RoleT)
+      }
    }
 
    const onSpecializationChange = (value: string) => {
@@ -226,6 +229,7 @@ const StuffPage: FC<StuffPage> = () => {
                            name={d.name}
                            email={d.email}
                            phoneNum={d.phoneNum}
+                           statusData={d.statusData}
                            rooms={route !== `Doctors` ? null : d.docRooms}
                         />
                      </div>)

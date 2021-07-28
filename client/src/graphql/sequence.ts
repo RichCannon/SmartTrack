@@ -14,7 +14,7 @@ export type GetDoctorSequenceResponse = {
       docRooms: {
          _id: string
          name: string
-      }
+      }[]
    }[]
 }
 
@@ -29,5 +29,51 @@ export const GET_DOCTORS_SEQUENCE = gql`
             
          }
       }
+   }
+`
+
+export type RoomWithoutOneDocT = {
+   _id: string
+   name: string
+   doc: {
+      _id: string
+      name: string
+   }
+}
+
+export type RoomWithoutOneDocResponse = {
+   getRoomsWithoutOneDoc: RoomWithoutOneDocT[]
+}
+
+export type RoomWithoutOneDocPayload = {
+   docId: string
+}
+
+export const GET_ROOM_WOTHOUT_ONE_DOC = gql`
+   query GetRoomsWithoutOneDoc($docId: String!) {
+      getRoomsWithoutOneDoc(docId: $docId) {
+         _id,
+         name,
+         doc {
+            _id,
+            name
+         }
+      }
+   }
+`
+
+export type CreateRoomResponse = {
+   createRoom: boolean
+}
+
+export type CreateRoomPayload = {
+   data: {
+      name: string
+   }
+}
+
+export const CREATE_ROOM = gql`
+   mutation CreateRoom($data: CreateRoomInput!) {
+      createRoom(data: $data)
    }
 `

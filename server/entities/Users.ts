@@ -5,6 +5,7 @@ import { Ref } from "typegoose";
 
 import { RoleT } from "../types/types";
 import { Rooms } from "./Rooms";
+import { Status } from "./Status";
 
 
 
@@ -35,11 +36,15 @@ export class Users {
    phoneNum: string
 
    @Field(() => [ID], { defaultValue: [] })
-   @prop({ ref: Rooms, })
+   @prop({ ref: 'Rooms', })
    rooms!: [Ref<Rooms>]
 
    @Field(() => [Rooms], { nullable: true })
    docRooms: [Rooms]
+
+
+   @Field(() => [Status], { nullable: true, })
+   statusData: [Status]
 }
 
 

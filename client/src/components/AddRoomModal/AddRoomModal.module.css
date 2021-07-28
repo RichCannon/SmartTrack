@@ -1,0 +1,29 @@
+.container {
+   display: flex;
+   width: 90vw;
+   background: #FFFFFF;
+   box-shadow: 0px 4px 20px rgba(32, 43, 93, 0.12);
+   border-radius: 20px;
+   flex-direction: column;
+   padding: 1.2em;
+   box-sizing: border-box;
+}
+
+.title {
+   display: flex;
+   justify-content: center;
+   font-weight: bold;
+   margin: 1em 0;
+}
+
+
+.buttonLabel {
+   color: #fff
+}
+
+.button {
+   height: auto;
+   padding: .5em;
+   margin-top: 1em;
+}
+

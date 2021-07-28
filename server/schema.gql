@@ -10,8 +10,6 @@ input AddRoomToDoctorInput {
 
 input CreateRoomInput {
   name: String!
-  ownerId: String!
-  status: ID!
 }
 
 input CreateStatusInput {
@@ -43,13 +41,13 @@ type Query {
   getAllUsers: [Users!]!
   getByRole(role: String!): [Users!]!
   getRooms(id: String!): [Rooms!]!
+  getRoomsWithoutOneDoc(docId: String!): [Rooms!]!
   getUser(id: String!): Users!
 }
 
 type Rooms {
   _id: ID!
-  color: String
-  description: String
+  doc: [Users!]
   name: String!
   ownerId: String!
   status: String!
@@ -90,4 +88,5 @@ type Users {
   role: String!
   rooms: [ID!]
   specialization: String
+  statusData: [Status!]
 }

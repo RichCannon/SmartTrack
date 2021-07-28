@@ -1,11 +1,17 @@
 import { gql } from "@apollo/client";
+
 import { RoleT } from "../types/types";
+
+export type StatusT = {
+   _id: string
+   color: string
+   description: string
+}
 
 
 export type RoomT = {
    name: string
-   description: string
-   color: string
+   status: string
    _id: string
    ownerId: string
 }
@@ -16,10 +22,12 @@ export type UserT = {
    specialization: string
    email: string
    phoneNum: string
+   docRooms: RoomT[]
+   statusData: StatusT[]
 }
 
 export type GetByRoleResponse = {
-   getByRole: (UserT & { docRooms: RoomT[] })[]
+   getByRole: UserT[]
 }
 
 export type GetByRolePayload = {
@@ -34,11 +42,14 @@ export const GET_USER_BY_ROLE = gql`
     email,
     phoneNum,
     docRooms {
-      name
-      color,
-      description,
+      name,
       _id,
-      ownerId
+      ownerId,
+      status,
+    }
+    statusData {
+       color,
+       description
     }
   }
 }

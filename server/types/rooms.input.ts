@@ -5,14 +5,10 @@ import { Field, ID, InputType } from "type-graphql"
 
 @InputType()
 export class CreateRoomInput {
-   @Field(() => ID)
-   status: string
 
    @Field()
    name: string
 
-   @Field(() => String)
-   ownerId: string
 }
 
 @InputType()

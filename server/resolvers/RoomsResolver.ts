@@ -1,4 +1,5 @@
 
+import { Types } from "mongoose";
 import { Arg, Resolver, Query, Mutation } from "type-graphql";
 
 import { Rooms, RoomsModel } from "../entities/Rooms";
@@ -14,11 +15,40 @@ export class RoomsResolver {
       return await RoomsModel.find({ ownerId: id })
    }
 
+   @Query(() => [Rooms])
+   async getRoomsWithoutOneDoc(@Arg("docId") docId: string) {
+      try {
+         return await RoomsModel.aggregate([
+            {
+               $match: { ownerId: { $ne: Types.ObjectId(docId) } }
+            },
+            {
+               $lookup: {
+                  from: 'users',
+                  localField: 'ownerId',
+                  foreignField: '_id',
+                  as: 'doc'
+               }
+            }
+         ])
+      } catch (e) {
+         console.error(e)
+         return
+      }
+
+   }
+
 
    @Mutation(() => Boolean)
    async createRoom(@Arg("data") data: CreateRoomInput) {
-      (await RoomsModel.create(data)).save()
-      return true
+      try {
+         (await RoomsModel.create(data)).save()
+         return true
+
+      } catch (e) {
+         console.error(e)
+         return false
+      }
    }
 
    @Mutation(() => Rooms)

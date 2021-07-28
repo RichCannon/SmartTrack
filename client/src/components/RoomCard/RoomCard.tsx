@@ -1,12 +1,14 @@
 import { FC } from 'react'
 
+import { StatusT } from '../../graphql/allerts'
 import { RoomT } from '../../graphql/dashboard'
 import s from './RoomCard.module.css'
 
 
 
-const RoomCard: FC<RoomT> = ({ description, name, color }) => {
+const RoomCard: FC<RoomT & { statusData: StatusT }> = ({ name, statusData }) => {
 
+   const { color, description } = statusData
 
    return (
       <div className={s.container}>

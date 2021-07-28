@@ -13,7 +13,6 @@ const DashboardPage = () => {
       variables: { role: `doctor` }
    })
 
-
    return (
       <div className={s.container}>
          {loading

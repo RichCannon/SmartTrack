@@ -57,11 +57,6 @@ const AllertsPage: FC = () => {
 
    const [currentStatusId, setCurrentStatusId] = useState(``)
 
-
-
-
-
-
    const clearState = () => {
       setColorName(``)
       setClickedColor(``)
@@ -155,7 +150,6 @@ const AllertsPage: FC = () => {
             ? <Preloader />
             : <>
                <MyButton label={`Add new`}
-
                   onButtonClick={onButtonClick}
                   className={s.button}
                   labelClassName={s.buttonText} />
@@ -168,8 +162,7 @@ const AllertsPage: FC = () => {
                            color={d.color}
                            onEditClick={() => onEditClick(d)} />
                      </div>
-                  ))
-                  }
+                  ))}
                </div>
             </>
          }

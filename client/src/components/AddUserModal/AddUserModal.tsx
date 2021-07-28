@@ -3,10 +3,10 @@ import { FC } from 'react'
 import { RoleT } from '../../types/types'
 import MyButton from '../MyButton/MyButton'
 import MyInput from '../MyInput/MyInput'
-import MySelect from '../MySelect/MySelect'
+import MySelect, { OptionsT } from '../MySelect/MySelect'
 import s from './AddUserModal.module.css'
 
-type AddUserModal = {
+type AddUserModalP = {
    email: string
    name: string
    phoneNum: string
@@ -16,14 +16,14 @@ type AddUserModal = {
    onEmailChange: (value: string) => void
    onPhoneNumChange: (value: string) => void
    onNameChange: (value: string) => void
-   onRoleChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
+   onRoleChange: (e: OptionsT | null) => void
    onSaveClick: () => void
    isLoading?: boolean
 }
 
 const roles: RoleT[] = [`admin`, `assistan`, `doctor`, `receptionist`]
 
-const AddUserModal: FC<AddUserModal> = ({
+const AddUserModal: FC<AddUserModalP> = ({
    email,
    name,
    phoneNum,
