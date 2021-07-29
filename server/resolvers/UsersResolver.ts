@@ -39,8 +39,8 @@ export class UsersResolver {
          {
             $lookup: {
                from: 'rooms',
-               localField: 'rooms',
-               foreignField: '_id',
+               localField: '_id',
+               foreignField: 'ownerId',
                as: 'docRooms'
 
             }
@@ -54,7 +54,7 @@ export class UsersResolver {
             }
          }
       ])
-      console.log(`DATA:`,data)
+     // console.log(`DATA:`,data)
       return data
    }
 

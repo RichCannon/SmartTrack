@@ -20,3 +20,23 @@ export class SetRoomStatusInput{
    statusId: string
 
 }
+
+
+// @InputType()
+// export class ChangeAllRoomOwnerInput {
+//    @Field(() => String)
+//    prevDocId: string
+
+//    @Field(() => String)
+//    roomId: string
+// }
+
+@InputType()
+export class ChangeAllRoomOwnerInputArr {
+   @Field(() => [String])
+   roomsId: string[]
+
+   @Field(() => String)
+   docId: string
+}
+

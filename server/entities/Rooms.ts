@@ -11,8 +11,8 @@ export class Rooms {
    @Field(() => ID)
    _id: string
 
-   @Field(() => String)
-   @prop({ ref: 'Users' })
+   @Field(() => String, { nullable: true, })
+   @prop({ ref: 'Users', required: false })
    ownerId: Types.ObjectId
 
    @prop({ ref: 'Status' })

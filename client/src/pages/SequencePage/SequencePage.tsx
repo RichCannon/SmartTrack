@@ -7,10 +7,18 @@ import { DragDropContext, Droppable, DropResult } from 'aligned-rbd'
 import DndRoomCard from '../../components/DndRoomCard/DndRoomCard'
 import s from './SequencePage.module.css'
 import MySelect, { OptionsT } from '../../components/MySelect/MySelect'
-import { CreateRoomPayload, CreateRoomResponse, CREATE_ROOM, GetDoctorSequencePayload, GetDoctorSequenceResponse, GET_DOCTORS_SEQUENCE, GET_ROOM_WOTHOUT_ONE_DOC, RoomWithoutOneDocPayload, RoomWithoutOneDocResponse, RoomWithoutOneDocT } from '../../graphql/sequence'
+import {
+   ChangeAllRoomOwnerPayload,
+   ChangeAllRoomOwnerResponse,
+   CHANGE_ALL_ROOM_OWNER,
+   CreateRoomPayload, CreateRoomResponse, CREATE_ROOM,
+   GetDoctorSequencePayload, GetDoctorSequenceResponse,
+   GET_DOCTORS_SEQUENCE,
+} from '../../graphql/sequence'
 import Preloader from '../../components/Preloader/Preloader'
 import Modal from '../../components/Modal/Modal'
 import AddRoomModal from '../../components/AddRoomModal/AddRoomModal'
+import MyButton from '../../components/MyButton/MyButton'
 
 export type DndRoomCardDataT = {
    idx: number
@@ -21,11 +29,11 @@ export type DndRoomCardDataT = {
 
 //const doctors = [`Alex Sample`, `Alex Sample2`, `Alex Sample3`]
 
-const roomCard = new Array(20).fill(null).map((d, idx) => ({
-   idx,
-   roomName: `${idx + 1}b`,
-   doctor: `Alex${idx + 1}`
-}))
+// const roomCard = new Array(20).fill(null).map((d, idx) => ({
+//    idx,
+//    roomName: `${idx + 1}b`,
+//    doctor: `Alex${idx + 1}`
+// }))
 
 
 
@@ -35,26 +43,44 @@ const FIELD_WITH_AVAIB_ROOMS = `fieldWithAvailableRooms`
 
 type CurrentDocT = OptionsT
 
+type RoomT = {
+   ownerId: string
+   _id: string
+   name: string
+   docName: string
+}
 
 
 const SequencePage = () => {
    const [currentDoc, setCurrentDoc] = useState<CurrentDocT | null>(null)
 
-   const [roomsList, setRoomsList] = useState<RoomWithoutOneDocT[]>([])
-   const [chosenRooms, setChosenRooms] = useState<RoomWithoutOneDocT[]>([])
+   const [roomsList, setRoomsList] = useState<RoomT[]>([])
+   const [chosenRooms, setChosenRooms] = useState<RoomT[]>([])
 
    const [isVisible, setIsVisible] = useState(false)
 
    const onCompletedGetDoctor = (response: GetDoctorSequenceResponse) => {
-      setCurrentDoc({ value: response.getByRole[0]._id, label: response.getByRole[0].name })
-      setChosenRooms(response.getByRole[0].docRooms.map(d => ({ ...d, doc: { _id: response.getByRole[0]._id, name: response.getByRole[0].name } })))
-      getRoomsWithoutOneDoc({ variables: { docId: response.getByRole[0]._id } })
+      const { _id, name, } = response.getByRole[0]
+
+      const currentId = currentDoc ? currentDoc.value : response.getByRole[0]._id
+
+      setCurrentDoc({ value: _id, label: name })
+
+      let roomsList: RoomT[] = []
+      for (let index = 0; index < response.getByRole.length; index++) {
+         const d = response.getByRole[index];
+
+         if (d._id === currentId) {
+            setChosenRooms(d.docRooms.map(s => ({ ownerId: d._id, docName: d.name, name: s.name, _id: s._id })))
+         }
+         else {
+            roomsList = [...roomsList, ...d.docRooms.map(s => ({ ownerId: d._id, docName: d.name, name: s.name, _id: s._id }))]
+         }
+      }
+
+      setRoomsList(roomsList)
    }
 
-   const onCompletedGetRooms = (response: RoomWithoutOneDocResponse) => {
-      console.log(`withonedoc:`, response.getRoomsWithoutOneDoc)
-      setRoomsList(response.getRoomsWithoutOneDoc)
-   }
 
    const { data, loading, error } =
       useQuery<GetDoctorSequenceResponse, GetDoctorSequencePayload>(GET_DOCTORS_SEQUENCE, {
@@ -62,12 +88,11 @@ const SequencePage = () => {
          variables: { role: `doctor` }
       })
 
-   const [getRoomsWithoutOneDoc, { data: roomsData, loading: roomsLoading }] =
-      useLazyQuery<RoomWithoutOneDocResponse, RoomWithoutOneDocPayload>(GET_ROOM_WOTHOUT_ONE_DOC, {
-         onCompleted: onCompletedGetRooms,
-      })
 
    const [createRoom, { data: createRoomdata, loading: createRoomLoading }] = useMutation<CreateRoomResponse, CreateRoomPayload>(CREATE_ROOM)
+
+   const [changeAllRoomOwner, { data: changeAllRoomOwnerData, loading: changeAllRoomOwnerLoad }] =
+      useMutation<ChangeAllRoomOwnerResponse, ChangeAllRoomOwnerPayload>(CHANGE_ALL_ROOM_OWNER)
 
    console.log(`getByRole: `, data?.getByRole)
 
@@ -75,6 +100,27 @@ const SequencePage = () => {
 
    const onChange = (value: OptionsT | null) => {
       setCurrentDoc(value)
+
+      const currentId = value?.value
+
+      if (currentId && data) {
+         const response = data
+
+         let roomsList: RoomT[] = []
+         for (let index = 0; index < response.getByRole.length; index++) {
+            const d = response.getByRole[index];
+
+            if (d._id === currentId) {
+               setChosenRooms(d.docRooms.map(s => ({ ownerId: d._id, docName: d.name, name: s.name, _id: s._id })))
+            }
+            else {
+               roomsList = [...roomsList, ...d.docRooms.map(s => ({ ownerId: d._id, docName: d.name, name: s.name, _id: s._id }))]
+            }
+         }
+
+         setRoomsList(roomsList)
+      }
+      //getRoomsWithoutOneDoc({ variables: { docId: value!.value } })
    }
 
 
@@ -92,9 +138,6 @@ const SequencePage = () => {
    //    setCurrentDndCard(null)
    // }
    const onDrop = (e: DropResult) => {
-      //console.log(`e.source.index`, e.source.index)
-
-      // const index = e.source.index - 1
 
       if (e.source.droppableId !== e.destination?.droppableId) {
          if (e.destination?.droppableId === FIELD_TO_ADD_ROOM) {
@@ -128,9 +171,23 @@ const SequencePage = () => {
 
    const onSaveClick = async () => {
       await createRoom({ variables: { data: { name: roomName } } })
-      getRoomsWithoutOneDoc({ variables: { docId: currentDoc!.value } })
+      // getRoomsWithoutOneDoc({ variables: { docId: currentDoc!.value } })
    }
 
+
+   const onSaveRoomsClick = async () => {
+      const payload = { roomsId: chosenRooms.map(d => d._id), docId: currentDoc!.value }
+      changeAllRoomOwner({
+         variables: { data: payload },
+         refetchQueries: [{
+            query: GET_DOCTORS_SEQUENCE,
+            variables: { role: `doctor` },
+         }],
+      })
+   }
+
+
+   console.log(`currentDoc`, currentDoc)
    return (
       <div className={s.container}>
          {isVisible &&
@@ -139,16 +196,17 @@ const SequencePage = () => {
                   onSaveClick={onSaveClick}
                   roomName={roomName}
                   onRoomNameChange={onRoomNameChange}
-                  isLoading={loading || roomsLoading || createRoomLoading} />
+                  isLoading={loading || createRoomLoading} />
             </Modal>
          }
-         {loading || roomsLoading
+         {loading
             ? <Preloader />
             : <DragDropContext
                onDragEnd={onDrop}>
+               <MyButton label={`Save`} onButtonClick={onSaveRoomsClick} labelClassName={s.buttonText} />
                <div className={s.title}>{`Choose a Doctor`}</div>
                <div className={s.select}>
-                  <MySelect onChange={onChange} value={currentDoc} options={data!.getByRole.map(d => ({ value: d._id, label: d.name }))} />
+                  <MySelect onChange={onChange} value={currentDoc} options={data ? data!.getByRole.map(d => ({ value: d._id, label: d.name })) : []} />
                </div>
                <Droppable direction={`grid`} droppableId={FIELD_TO_ADD_ROOM}>
                   {(provided: any) => <div
@@ -184,11 +242,12 @@ const SequencePage = () => {
                            </div>
                            <div className={s.addText}>{`Add a room`}</div>
                         </div>
-                        {roomsList.map((d, idx) => <DndRoomCard
-                           idx={idx}
-                           key={d._id}
-                           roomName={d.name}
-                           doctor={d.doc.name} />)
+                        {roomsList.map((d, idx) =>
+                           <DndRoomCard
+                              idx={idx}
+                              key={d._id}
+                              roomName={d.name}
+                              doctor={d.docName} />)
                         }
                         {provided.placeholder}
                      </div>}
