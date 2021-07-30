@@ -7,7 +7,7 @@ export type OptionsT = {
    value: string, label: string
 }
 
-type MySelect = {
+type MySelectP = {
    onChange: (e: OptionsT | null) => void
    value: OptionsT | string | null
    options: OptionsT[] | string[]
@@ -16,7 +16,7 @@ type MySelect = {
 
 type IsMulti = false
 
-const MySelect: FC<MySelect> = ({ onChange, value, options, label = null }) => {
+const MySelect: FC<MySelectP> = ({ onChange, value, options, label = null }) => {
    //@ts-ignore
    const optionsR: OptionsT[] = typeof options[0] === `string` ? options.map(d => ({ value: d, label: d })) : options
    //@ts-ignore

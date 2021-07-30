@@ -9,12 +9,14 @@ import { RoleT } from '../../types/types'
 import Preloader from '../../components/Preloader/Preloader'
 import Modal from '../../components/Modal/Modal'
 import AddUserModal from '../../components/AddUserModal/AddUserModal'
-import { ByRoleResponseStuff, CreateUserPayload, CreateUserResponse, CREATE_USER, DeleteUserPayload, DeleteUserResponse, DELETE_USER, UpdateUserPayload, UpdateUserResponse, UPDATE_USER, USER_BY_ROLE_STUFF_PAGE } from '../../graphql/stuff'
+import {
+   ByRoleResponseStuff, CreateUserPayload, CreateUserResponse,
+   CREATE_USER, DeleteUserPayload, DeleteUserResponse, DELETE_USER,
+   UpdateUserPayload, UpdateUserResponse, UPDATE_USER,
+   USER_BY_ROLE_STUFF_PAGE
+} from '../../graphql/stuff'
 import { OptionsT } from '../../components/MySelect/MySelect'
 
-type StuffPage = {
-
-}
 
 type RouteT = `Doctors` | `Assistans` | `Receptionist`
 
@@ -38,7 +40,7 @@ const variableRoles: VariableRolesT = {
 
 
 
-const StuffPage: FC<StuffPage> = () => {
+const StuffPage: FC = () => {
 
    const [route, setRoute] = useState<RouteT>(`Doctors`)
 
@@ -229,7 +231,6 @@ const StuffPage: FC<StuffPage> = () => {
                            name={d.name}
                            email={d.email}
                            phoneNum={d.phoneNum}
-                           statusData={d.statusData}
                            rooms={route !== `Doctors` ? null : d.docRooms}
                         />
                      </div>)

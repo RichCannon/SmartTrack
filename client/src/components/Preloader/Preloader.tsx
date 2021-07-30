@@ -10,7 +10,7 @@ type PreloaderProps = {
 
 const Preloader: FC<PreloaderProps> = ({ size = `4em`, color = `#212155`, style = {} }) => {
    return (
-      <div className={s.ldsCircle}><div style={{ ...style, width: size, height: size, background: color }}></div></div>
+      <div className={s.container}><div className={s.ldsCircle}><div style={{ ...style, width: size, height: size, background: color }}></div></div></div>
    )
 }
 

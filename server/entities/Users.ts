@@ -5,7 +5,6 @@ import { Ref } from "typegoose";
 
 import { RoleT } from "../types/types";
 import { Rooms } from "./Rooms";
-import { Status } from "./Status";
 
 
 
@@ -43,8 +42,6 @@ export class Users {
    docRooms: [Rooms]
 
 
-   @Field(() => [Status], { nullable: true, })
-   statusData: [Status]
 }
 
 

@@ -3,14 +3,14 @@ import { UpdateStatusPaylaod } from '../../graphql/allerts'
 import EditIcon from '../StuffCard/assets/EditIcon'
 import s from './StatusCard.module.css'
 
-type StatusCard = {
+type StatusCardP = {
    idx: number
    description: string
    color: string
    onEditClick: () => void
 }
 
-const StatusCard: FC<StatusCard> = ({ idx, description, color, onEditClick }) => {
+const StatusCard: FC<StatusCardP> = ({ idx, description, color, onEditClick }) => {
    return (
       <div className={s.container}>
          <div className={s.idxWrapper}>{idx}</div>

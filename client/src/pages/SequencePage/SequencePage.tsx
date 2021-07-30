@@ -1,6 +1,6 @@
 
-import { useState } from 'react'
-import { useLazyQuery, useMutation, useQuery } from '@apollo/client'
+import { useEffect, useState } from 'react'
+import {  useMutation, useQuery } from '@apollo/client'
 // @ts-ignore
 import { DragDropContext, Droppable, DropResult } from 'aligned-rbd'
 
@@ -12,7 +12,9 @@ import {
    ChangeAllRoomOwnerResponse,
    CHANGE_ALL_ROOM_OWNER,
    CreateRoomPayload, CreateRoomResponse, CREATE_ROOM,
+   GetAllRoomsResponse,
    GetDoctorSequencePayload, GetDoctorSequenceResponse,
+   GET_ALL_ROOMS,
    GET_DOCTORS_SEQUENCE,
 } from '../../graphql/sequence'
 import Preloader from '../../components/Preloader/Preloader'
@@ -35,7 +37,15 @@ export type DndRoomCardDataT = {
 //    doctor: `Alex${idx + 1}`
 // }))
 
-
+// const refetchQueriesOnMutation = [
+//    {
+//       query: GET_DOCTORS_SEQUENCE,
+//       variables: { role: `doctor` },
+//    },
+//    {
+//       query: GET_ALL_ROOMS
+//    }
+// ]
 
 
 const FIELD_TO_ADD_ROOM = `fieldToAddRoom`
@@ -56,87 +66,76 @@ const SequencePage = () => {
 
    const [roomsList, setRoomsList] = useState<RoomT[]>([])
    const [chosenRooms, setChosenRooms] = useState<RoomT[]>([])
+   const [docOptions, setDocOptions] = useState<OptionsT[]>([])
+
+   const [isLoading, setIsLoading] = useState(false)
 
    const [isVisible, setIsVisible] = useState(false)
 
-   const onCompletedGetDoctor = (response: GetDoctorSequenceResponse) => {
-      const { _id, name, } = response.getByRole[0]
 
-      const currentId = currentDoc ? currentDoc.value : response.getByRole[0]._id
-
-      setCurrentDoc({ value: _id, label: name })
-
-      let roomsList: RoomT[] = []
-      for (let index = 0; index < response.getByRole.length; index++) {
-         const d = response.getByRole[index];
-
-         if (d._id === currentId) {
-            setChosenRooms(d.docRooms.map(s => ({ ownerId: d._id, docName: d.name, name: s.name, _id: s._id })))
-         }
-         else {
-            roomsList = [...roomsList, ...d.docRooms.map(s => ({ ownerId: d._id, docName: d.name, name: s.name, _id: s._id }))]
-         }
-      }
-
-      setRoomsList(roomsList)
-   }
-
-
-   const { data, loading, error } =
+   const { refetch: getAllDoctors } =
       useQuery<GetDoctorSequenceResponse, GetDoctorSequencePayload>(GET_DOCTORS_SEQUENCE, {
-         onCompleted: onCompletedGetDoctor,
+         skip: true,
          variables: { role: `doctor` }
       })
 
+   const { refetch: getAllRooms } =
+      useQuery<GetAllRoomsResponse>(GET_ALL_ROOMS, {
+         skip: true
+      })
 
-   const [createRoom, { data: createRoomdata, loading: createRoomLoading }] = useMutation<CreateRoomResponse, CreateRoomPayload>(CREATE_ROOM)
+   const serializeResponse = async (doc?: OptionsT | null) => {
+      setIsLoading(true)
+      const { data: { getByRole: doctors } } = await getAllDoctors()
+      const { data: { getAllRooms: rooms } } = await getAllRooms()
 
-   const [changeAllRoomOwner, { data: changeAllRoomOwnerData, loading: changeAllRoomOwnerLoad }] =
+      const currentDoc = doc ? doc : { value: doctors[0]._id, label: doctors[0].name }
+      setCurrentDoc(currentDoc)
+
+      let chosenRooms: RoomT[] = []
+      let roomsList: RoomT[] = []
+
+      for (let i = 0; i < rooms.length; i++) {
+         const el = rooms[i]
+         if (el.ownerId === currentDoc.value) {
+            chosenRooms = [...chosenRooms, { ...el, docName: currentDoc.label }]
+         }
+         else {
+            const docNameArr = doctors.filter(d => d._id === el.ownerId)
+            const docName = docNameArr.length > 0 ? docNameArr[0].name : ``
+            roomsList = [...roomsList, { ...el, docName }]
+         }
+      }
+
+      setChosenRooms(chosenRooms)
+      setRoomsList(roomsList)
+
+      setDocOptions(doctors.map(d => ({ value: d._id, label: d.name })))
+
+      setIsLoading(false)
+   }
+
+   useEffect(() => {
+      serializeResponse()
+   }, [])
+
+
+   console.log(`chosenRooms`, chosenRooms)
+   console.log(`roomsList:`, roomsList)
+
+   const [createRoom] = useMutation<CreateRoomResponse, CreateRoomPayload>(CREATE_ROOM)
+
+   const [changeAllRoomOwner, { loading: changeAllRoomLoading }] =
       useMutation<ChangeAllRoomOwnerResponse, ChangeAllRoomOwnerPayload>(CHANGE_ALL_ROOM_OWNER)
 
-   console.log(`getByRole: `, data?.getByRole)
 
-   //   const [currentDndCard, setCurrentDndCard] = useState<typeof roomCard[0] | null>(null)
 
    const onChange = (value: OptionsT | null) => {
-      setCurrentDoc(value)
-
-      const currentId = value?.value
-
-      if (currentId && data) {
-         const response = data
-
-         let roomsList: RoomT[] = []
-         for (let index = 0; index < response.getByRole.length; index++) {
-            const d = response.getByRole[index];
-
-            if (d._id === currentId) {
-               setChosenRooms(d.docRooms.map(s => ({ ownerId: d._id, docName: d.name, name: s.name, _id: s._id })))
-            }
-            else {
-               roomsList = [...roomsList, ...d.docRooms.map(s => ({ ownerId: d._id, docName: d.name, name: s.name, _id: s._id }))]
-            }
-         }
-
-         setRoomsList(roomsList)
-      }
-      //getRoomsWithoutOneDoc({ variables: { docId: value!.value } })
+      serializeResponse(value)
    }
 
 
 
-   // const onDragStart = (e: React.DragEvent<HTMLDivElement>, card: DndRoomCardDataT) => {
-   //    setCurrentDndCard(card)
-   // }
-   // const onDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-   //    e.preventDefault()
-   // }
-   // const onDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
-
-   // }
-   // const onDragEnd = (e: React.DragEvent<HTMLDivElement>) => {
-   //    setCurrentDndCard(null)
-   // }
    const onDrop = (e: DropResult) => {
 
       if (e.source.droppableId !== e.destination?.droppableId) {
@@ -170,20 +169,20 @@ const SequencePage = () => {
    }
 
    const onSaveClick = async () => {
-      await createRoom({ variables: { data: { name: roomName } } })
-      // getRoomsWithoutOneDoc({ variables: { docId: currentDoc!.value } })
+      await createRoom({
+         variables: { data: { name: roomName } },
+      })
+      await serializeResponse(currentDoc)
+      setIsVisible(false)
    }
 
 
    const onSaveRoomsClick = async () => {
       const payload = { roomsId: chosenRooms.map(d => d._id), docId: currentDoc!.value }
-      changeAllRoomOwner({
+      await changeAllRoomOwner({
          variables: { data: payload },
-         refetchQueries: [{
-            query: GET_DOCTORS_SEQUENCE,
-            variables: { role: `doctor` },
-         }],
       })
+      await serializeResponse(currentDoc)
    }
 
 
@@ -196,17 +195,17 @@ const SequencePage = () => {
                   onSaveClick={onSaveClick}
                   roomName={roomName}
                   onRoomNameChange={onRoomNameChange}
-                  isLoading={loading || createRoomLoading} />
+                  isLoading={isLoading} />
             </Modal>
          }
-         {loading
+         {isLoading || changeAllRoomLoading
             ? <Preloader />
             : <DragDropContext
                onDragEnd={onDrop}>
                <MyButton label={`Save`} onButtonClick={onSaveRoomsClick} labelClassName={s.buttonText} />
                <div className={s.title}>{`Choose a Doctor`}</div>
                <div className={s.select}>
-                  <MySelect onChange={onChange} value={currentDoc} options={data ? data!.getByRole.map(d => ({ value: d._id, label: d.name })) : []} />
+                  <MySelect onChange={onChange} value={currentDoc} options={docOptions} />
                </div>
                <Droppable direction={`grid`} droppableId={FIELD_TO_ADD_ROOM}>
                   {(provided: any) => <div

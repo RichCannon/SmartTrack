@@ -20,11 +20,11 @@ export const USER_BY_ROLE_STUFF_PAGE = gql`
     docRooms {
       name,
       _id,
-      ownerId
-    }
-    statusData {
-       color,
-       description
+      ownerId,
+      statusData {
+         color,
+         description
+      }
     }
   }
 }

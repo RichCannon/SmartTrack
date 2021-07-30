@@ -30,32 +30,63 @@ export class UsersResolver {
 
    @Query(() => [Users])
    async getByRole(@Arg(`role`) role: RoleT) {
-      const data =  await UsersModel.aggregate([
-         {
-            $match: {
-               role
-            }
-         },
-         {
-            $lookup: {
-               from: 'rooms',
-               localField: '_id',
-               foreignField: 'ownerId',
-               as: 'docRooms'
+      try {
+         if (role === `doctor`) {
+            return await UsersModel.aggregate([
+               {
+                  $match: {
+                     role
+                  }
+               },
+               {
+                  $lookup: {
+                     from: 'rooms',
+                     let: { userId: "$_id" },
+                     pipeline: [
+                        {
+                           $match: {
+                              $expr: {
+                                 $eq: ["$ownerId", "$$userId"]
 
-            }
-         },
-         {
-            $lookup: {
-               from: 'status',
-               localField: 'docRooms.status',
-               foreignField: '_id',
-               as: 'statusData'
-            }
+                              }
+                           }
+                        },
+                        {
+                           $lookup: {
+                              from: 'status',
+                              let: { statusId: "$status" },
+                              pipeline: [
+                                 {
+                                    $match: {
+                                       $expr: {
+                                          $eq: ["$_id", "$$statusId"]
+                                       }
+                                    }
+                                 },
+                              ],
+                              as: "statusData"
+                           },
+                        },
+                        {
+                           $unwind: {
+                              path: "$statusData"
+                           }
+                        }
+                     ],
+                     as: 'docRooms'
+                  }
+               }
+            ])
          }
-      ])
-     // console.log(`DATA:`,data)
-      return data
+         else {
+            return await UsersModel.find({ role })
+         }
+      }
+      catch (e) {
+         console.log(e)
+         return
+      }
+      // console.log(`DATA:`,data)
    }
 
    @Query(() => Users, { nullable: false })

@@ -4,7 +4,7 @@ import s from './DrawerTab.module.css'
 import { RoutesT } from "../../types/types"
 import { NavLink } from "react-router-dom"
 
-type DrawerTab = {
+type DrawerTabP = {
    routeTo?: RoutesT
    label: string
    onClick?: () => void
@@ -14,7 +14,7 @@ type DrawerTab = {
    preventDefault?: boolean
 }
 
-const DrawerTab: FC<DrawerTab> = ({ routeTo, label, onClick, icon, color,preventDefault }) => {
+const DrawerTab: FC<DrawerTabP> = ({ routeTo, label, onClick, icon, color,preventDefault }) => {
 
    const [isActive, setIsActive] = useState(false)
 

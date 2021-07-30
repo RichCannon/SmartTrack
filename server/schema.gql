@@ -54,10 +54,10 @@ type Query {
 
 type Rooms {
   _id: ID!
-  doc: [Users!]
   name: String!
   ownerId: String
   status: String!
+  statusData: Status
 }
 
 input SetRoomStatusInput {
@@ -95,5 +95,4 @@ type Users {
   role: String!
   rooms: [ID!]
   specialization: String
-  statusData: [Status!]
 }

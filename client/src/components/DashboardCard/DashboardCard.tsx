@@ -4,10 +4,12 @@ import { UserT } from '../../graphql/dashboard'
 import RoomCard from '../RoomCard/RoomCard'
 import s from './DashboardCard.module.css'
 
-type DashboardCard = UserT
+type DashboardCardP = UserT & {
+   onRoomCardClick: (_id: string) => void
+}
 
-const DashboardCard: FC<DashboardCard> = ({ name, specialization, docRooms,statusData }) => {
 
+const DashboardCard: FC<DashboardCardP> = ({ name, specialization, docRooms, onRoomCardClick }) => {
 
 
    return (
@@ -32,7 +34,7 @@ const DashboardCard: FC<DashboardCard> = ({ name, specialization, docRooms,statu
                </div>
             </div>
             <div className={s.statusCards}>
-               {docRooms ? docRooms.map((d, idx) => <RoomCard key={`ROOM_CARD_${idx}`} {...d} statusData={statusData[idx]} />) : []}
+               {docRooms ? docRooms.map((d, idx) => <RoomCard onClick={onRoomCardClick} key={`ROOM_CARD_${idx}`} {...d} />) : []}
             </div>
          </div>
       </div>

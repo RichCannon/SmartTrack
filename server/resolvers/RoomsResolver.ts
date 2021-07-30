@@ -66,7 +66,7 @@ export class RoomsResolver {
             color: status?.color
          }
       })
-      return room
+      return { ownerId: room!.ownerId, status: statusId, name: room!.name, _id: roomId, }
    }
 
    @Mutation(() => Boolean)
@@ -76,24 +76,19 @@ export class RoomsResolver {
 
          const rooms = await RoomsModel.find({ ownerId: data.docId })
 
-         console.log(`data`,data)
+         const roomFormatted1 = rooms.map(d => ({ roomId: d._id, docId: data.roomsId.includes(d._id) ? data.docId : `` }))
+         const roomFormatted2 = data.roomsId.filter(d => !rooms.map(f => f._id).includes(d)).map(g => ({ roomId: g, docId: data.docId }))
 
-         let roomFormatted = [
-            ...rooms.map(d => ({ roomId: d._id, docId: data.roomsId.includes(d._id) ? data.docId : `` })),
-            ...data.roomsId.filter(d => rooms.map(f => f._id).includes(d)).map(g => ({ roomId: g, docId: data.docId }))
-         ]
+         const roomFormatted = [...roomFormatted1, ...roomFormatted2]
 
-         console.log(roomFormatted)
-         // TODO: Finish add and remove room logic
 
          for (const d of roomFormatted) {
             await RoomsModel.updateOne({ _id: d.roomId },
-               //@ts-ignore
-                {
-               $set: {
-                  ownerId: d.docId ? Types.ObjectId(d.docId) : null
-               }
-            })
+               {
+                  $set: {
+                     ownerId: d.docId ? Types.ObjectId(d.docId) : null
+                  }
+               })
          }
 
 

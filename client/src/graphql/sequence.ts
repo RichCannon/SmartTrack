@@ -5,23 +5,23 @@ import { RoleT } from "../types/types";
 
 
 
-// export type GetAllRoomsResponse = {
-//    getAllRooms: {
-//       _id: string
-//       name: string
-//       ownerId: string
-//    }[]
-// }
+export type GetAllRoomsResponse = {
+   getAllRooms: {
+      _id: string
+      name: string
+      ownerId: string
+   }[]
+}
 
-// export const GET_ALL_ROOMS = gql`
-//    query GetAllRooms() {
-//       getAllRooms {
-//          _id,
-//          name,
-//          ownerId
-//       }
-//    }
-// `
+export const GET_ALL_ROOMS = gql`
+   query GetAllRooms {
+      getAllRooms {
+         _id,
+         name,
+         ownerId
+      }
+   }
+`
 
 
 export type GetDoctorSequencePayload = {
@@ -32,11 +32,6 @@ export type GetDoctorSequenceResponse = {
    getByRole: {
       _id: string
       name: string
-      docRooms: {
-         _id: string
-         name: string
-         ownerId: string
-      }[]
    }[]
 }
 
@@ -45,11 +40,6 @@ export const GET_DOCTORS_SEQUENCE = gql`
       getByRole(role: $role) {
          _id,
          name,
-         docRooms {
-            _id,
-            name,
-            ownerId
-         }
       }
    }
 `

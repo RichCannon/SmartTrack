@@ -7,25 +7,23 @@ import DoctorIcon from './assets/DoctorIcon'
 import EditIcon from './assets/EditIcon'
 import s from './StuffCard.module.css'
 
-type StuffCard = {
+type StuffCardP = {
    number: number
    name: string,
    email: string
    phoneNum: string
    rooms: RoomsStuff[] | null
-   statusData: StatusT[]
    onEditClick: () => void
    onDeleteClick: () => void
    onDoctorClick?: () => void
 }
 
-const StuffCard: FC<StuffCard> = ({
+const StuffCard: FC<StuffCardP> = ({
    number,
    name,
    email,
    phoneNum,
    rooms,
-   statusData,
    onEditClick,
    onDeleteClick,
    onDoctorClick }) => {
@@ -55,7 +53,7 @@ const StuffCard: FC<StuffCard> = ({
                      {rooms.map((d, idx) => (
                         <div key={`STATUSES_${idx}`}
                            className={s.statuses}
-                           style={{ background: statusData[idx].color ? statusData[idx].color : `#ddd` }} />
+                           style={{ background: d.statusData.color ? d.statusData.color : `#ddd` }} />
                      ))}
                   </div>
                </>

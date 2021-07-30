@@ -3,11 +3,11 @@ import { FC } from 'react'
 import s from './Modal.module.css'
 
 
-type Modal = {
+type ModalP = {
    onDismissClick: () => void
 }
 
-const Modal: FC<Modal> = ({ onDismissClick, children }) => {
+const Modal: FC<ModalP> = ({ onDismissClick, children }) => {
    return (
       <div className={s.container} onClick={onDismissClick}>
          <div onClick={e => e.stopPropagation()} className={s.content}>

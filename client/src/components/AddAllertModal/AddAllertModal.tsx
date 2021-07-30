@@ -6,7 +6,7 @@ import MyInput from '../MyInput/MyInput'
 import s from './AddAllertModal.module.css'
 
 
-type AddAllertModal = {
+type AddAllertModalP = {
    onSaveClick: () => void
    colors: string[]
    clickedColor: string | null
@@ -17,7 +17,7 @@ type AddAllertModal = {
    isLoading?: boolean
 }
 
-const AddAllertModal: FC<AddAllertModal> = ({
+const AddAllertModal: FC<AddAllertModalP> = ({
    onSaveClick, colors, clickedColor,
    colorName, onColorClick, onTextChange,
    onCrossClick, isLoading

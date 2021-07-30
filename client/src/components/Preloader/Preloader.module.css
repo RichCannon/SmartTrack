@@ -1,7 +1,14 @@
+
+.container {
+   display: flex;
+   flex: 1
+}
+
 .ldsCircle {
    display: flex;
    justify-content: center;
    align-items: center;
+   flex: 1;
  }
  .ldsCircle > div {
    display: inline-block;

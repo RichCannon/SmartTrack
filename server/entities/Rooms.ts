@@ -2,7 +2,8 @@ import { getModelForClass, prop } from "@typegoose/typegoose";
 import { Types } from "mongoose";
 import { Field, ID, ObjectType } from "type-graphql";
 
-import { Users } from "./Users";
+import { Status } from "./Status";
+
 
 
 
@@ -11,9 +12,9 @@ export class Rooms {
    @Field(() => ID)
    _id: string
 
-   @Field(() => String, { nullable: true, })
-   @prop({ ref: 'Users', required: false })
-   ownerId: Types.ObjectId
+   @Field(() => String, { nullable: true, defaultValue: null })
+   @prop({ ref: 'Users', required: false, default: null })
+   ownerId: Types.ObjectId | null
 
    @prop({ ref: 'Status' })
    @Field(() => String)
@@ -23,8 +24,9 @@ export class Rooms {
    @Field()
    name: string
 
-   @Field(() => [Users], { nullable: true })
-   doc: [Users]
+
+   @Field(() => Status, { nullable: true, })
+   statusData: Status
 
 }
 

@@ -1,18 +1,17 @@
 import { FC } from 'react'
 // @ts-ignore
 import { Draggable } from 'aligned-rbd'
-import { DndRoomCardDataT } from '../../pages/SequencePage/SequencePage'
 import EditIcon from '../StuffCard/assets/EditIcon'
 import CrossIcon from './assets/CrossIcon'
 import s from './DndRoomCard.module.css'
 
-type DndRoomCard = {
+type DndRoomCardP = {
    roomName: string
    doctor: string
    idx: number
 }
 
-const DndRoomCard: FC<DndRoomCard> = ({
+const DndRoomCard: FC<DndRoomCardP> = ({
    idx,
    roomName,
    doctor,

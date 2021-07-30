@@ -1,17 +1,18 @@
 import { FC } from 'react'
 
-import { StatusT } from '../../graphql/allerts'
 import { RoomT } from '../../graphql/dashboard'
 import s from './RoomCard.module.css'
 
 
+type RoomCardT = {
+   onClick: (_id: string) => void
+} & RoomT
 
-const RoomCard: FC<RoomT & { statusData: StatusT }> = ({ name, statusData }) => {
+const RoomCard: FC<RoomCardT> = ({ _id, name, statusData: { description, color }, onClick }) => {
 
-   const { color, description } = statusData
 
    return (
-      <div className={s.container}>
+      <div onClick={() => onClick(_id)} className={s.container}>
          <div className={s.header}>
             <div className={s.name}>{name}</div>
             <div className={s.rank}><div className={s.circle}>{`R`}</div></div>

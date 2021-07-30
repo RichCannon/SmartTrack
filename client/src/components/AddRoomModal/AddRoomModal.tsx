@@ -5,14 +5,14 @@ import MyInput from '../MyInput/MyInput'
 import s from './AddRoomModal.module.css'
 
 
-type AddRoomModal = {
+type AddRoomModalP = {
    roomName: string
    onRoomNameChange: (value: string) => void
    onSaveClick: () => void
    isLoading: boolean
 }
 
-const AddRoomModal: FC<AddRoomModal> = ({ roomName, isLoading, onRoomNameChange, onSaveClick }) => {
+const AddRoomModal: FC<AddRoomModalP> = ({ roomName, isLoading, onRoomNameChange, onSaveClick }) => {
    return (
       <div className={s.container}>
          <div className={s.title}>{`Add new room`}</div>

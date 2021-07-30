@@ -1,12 +1,9 @@
 import { gql } from "@apollo/client";
 
 import { RoleT } from "../types/types";
+import { StatusT } from "./allerts";
 
-export type StatusT = {
-   _id: string
-   color: string
-   description: string
-}
+
 
 
 export type RoomT = {
@@ -14,6 +11,7 @@ export type RoomT = {
    status: string
    _id: string
    ownerId: string
+   statusData: StatusT
 }
 
 export type UserT = {
@@ -23,7 +21,6 @@ export type UserT = {
    email: string
    phoneNum: string
    docRooms: RoomT[]
-   statusData: StatusT[]
 }
 
 export type GetByRoleResponse = {
@@ -37,6 +34,7 @@ export type GetByRolePayload = {
 export const GET_USER_BY_ROLE = gql`
   query Users($role: String!) {
    getByRole(role: $role) {
+   _id,
     name,
     specialization,
     email,
@@ -45,12 +43,38 @@ export const GET_USER_BY_ROLE = gql`
       name,
       _id,
       ownerId,
-      status,
-    }
-    statusData {
-       color,
-       description
+      statusData {
+         description,
+         color
+      }
     }
   }
 }
+`
+
+export type SetStatusRoomResponse = {
+   setRoomStatus: {
+      _id: string
+      ownerId: string
+      status: string
+      name: string
+   }
+}
+
+export type SetStatusRoomPayload = {
+   data: {
+      roomId: string
+      statusId: string
+   }
+}
+
+export const SET_STATUS_TO_ROOM = gql`
+   mutation SetStatusToRoom($data: SetRoomStatusInput!) {
+      setRoomStatus(data: $data) {
+         _id,
+         ownerId,
+         status,
+         name
+      }
+   }
 `
