@@ -20,5 +20,6 @@
        "emitDecoratorMetadata": true,
        "strict": false,
        "experimentalDecorators": true,
+       
    },
 }

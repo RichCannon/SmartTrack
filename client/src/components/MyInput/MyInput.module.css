@@ -27,7 +27,7 @@
 }
 
 .inputError {
-   border-bottom: 1px red solid;
+   border: 1px red solid;
 }
 
 .label {

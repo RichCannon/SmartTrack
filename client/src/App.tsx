@@ -24,7 +24,8 @@ const client = new ApolloClient({
    uri: `http://localhost:5000/graphql`,
    cache: new InMemoryCache({
       addTypename: false
-   })
+   }),
+   credentials: 'include'
 })
 
 const App = () => {
@@ -42,7 +43,7 @@ const App = () => {
          <ApolloProvider client={client}>
             <AuthContext.Provider value={{
                ...userData,
-               login: () => setUserData({ ...userData, isAuth: true }),
+               login: (role: RoleT) => setUserData({ ...userData, isAuth: true }),
                logout: () => setUserData({ ...userData, isAuth: false }),
                setRole: (role: RoleT) => setUserData({ ...userData, role })
             }}>
@@ -69,8 +70,7 @@ const App = () => {
                               </Switch>
                            </div>
                         </>
-                        :
-                        <div className={s.authContainer}>
+                        : <div className={s.authContainer}>
                            <Switch>
                               <Route path={`/login`}>
                                  <LoginPage />
@@ -78,7 +78,6 @@ const App = () => {
                               <Redirect to={`/login`} />
                            </Switch>
                         </div>
-
                   }
                </BrowserRouter>
             </AuthContext.Provider>

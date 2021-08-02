@@ -16,57 +16,51 @@ type MySelectP = {
 
 type IsMulti = false
 
-const MySelect: FC<MySelectP> = ({ onChange, value, options, label = null }) => {
-   //@ts-ignore
-   const optionsR: OptionsT[] = typeof options[0] === `string` ? options.map(d => ({ value: d, label: d })) : options
-   //@ts-ignore
-   const valueR: OptionsT = typeof value === `string` ? { value, label: value } : value
+const MySelect: FC<MySelectP> = ({ onChange, value, options, label }) => {
+
+   const optionsR = typeof options[0] === `string` ? options.map(d => ({ value: d, label: d })) : options
+   
+   const valueR = typeof value === `string` ? { value, label: value } : value
 
    const customStyles: StylesConfig<OptionsT, IsMulti> = {
-      input: (provided: any, state: any) => ({
+      input: () => ({
          flex: 1
       }),
-      valueContainer: (provided, state) => ({
+      valueContainer: () => ({
          flex: 1,
          display: 'flex',
          alignItems: `center`
       }),
-      control: (provided, state) => ({
+      control: () => ({
          width: '100%',
          fontFamily: 'Poppins',
          fontStyle: 'normal',
          border: '1px solid #D3D3FF',
          borderRadius: '20px',
-         padding: '.5em',
+         padding: '.3em .6em',
          backgroundColor: 'transparent',
          display: `flex`,
-         flex: 1
+         flex: 1,
+         boxSizing: `border-box`
       }),
-      indicatorSeparator: (provided, state) => ({
+      indicatorSeparator: () => ({
          display: 'none'
       }),
 
    }
 
-   return (
+   return (<>
+      {label && <div className={s.label}>{label}</div>}
       <Select
-
          styles={customStyles}
          defaultValue={valueR}
          onChange={e => onChange(e)}
-         options={optionsR}
+         options={optionsR as OptionsT[]}
       />
+   </>
    )
 }
 
 
 export default MySelect
 
-
-
-{/* <>
-      {label && <div className={s.label}>{label}</div>}
-      <select onChange={onChange} value={value} className={s.select}>
-         {options.map(d => <option value={d} key={d}>{d}</option>)}
-      </select>
-   </> */}

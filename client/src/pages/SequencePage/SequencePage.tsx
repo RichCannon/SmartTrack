@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from 'react'
-import {  useMutation, useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 // @ts-ignore
 import { DragDropContext, Droppable, DropResult } from 'aligned-rbd'
 
@@ -12,10 +12,16 @@ import {
    ChangeAllRoomOwnerResponse,
    CHANGE_ALL_ROOM_OWNER,
    CreateRoomPayload, CreateRoomResponse, CREATE_ROOM,
+   DeleteRoomPayload,
+   DeleteRoomResponse,
+   DELETE_ROOM,
    GetAllRoomsResponse,
    GetDoctorSequencePayload, GetDoctorSequenceResponse,
    GET_ALL_ROOMS,
    GET_DOCTORS_SEQUENCE,
+   UpdateRoomPayload,
+   UpdateRoomResponse,
+   UPDATE_ROOM,
 } from '../../graphql/sequence'
 import Preloader from '../../components/Preloader/Preloader'
 import Modal from '../../components/Modal/Modal'
@@ -120,15 +126,14 @@ const SequencePage = () => {
    }, [])
 
 
-   console.log(`chosenRooms`, chosenRooms)
-   console.log(`roomsList:`, roomsList)
 
    const [createRoom] = useMutation<CreateRoomResponse, CreateRoomPayload>(CREATE_ROOM)
+   const [updateRoom] = useMutation<UpdateRoomResponse, UpdateRoomPayload>(UPDATE_ROOM)
+   const [deleteRoom] = useMutation<DeleteRoomResponse, DeleteRoomPayload>(DELETE_ROOM)
+
 
    const [changeAllRoomOwner, { loading: changeAllRoomLoading }] =
       useMutation<ChangeAllRoomOwnerResponse, ChangeAllRoomOwnerPayload>(CHANGE_ALL_ROOM_OWNER)
-
-
 
    const onChange = (value: OptionsT | null) => {
       serializeResponse(value)
@@ -160,18 +165,36 @@ const SequencePage = () => {
 
    const onDismissClick = () => {
       setIsVisible(false)
+      setRoomName(``)
+      setCurrentRoomId(``)
    }
 
    const [roomName, setRoomName] = useState(``)
+   const [currentRoomId, setCurrentRoomId] = useState(``)
 
    const onRoomNameChange = (value: string) => {
-      setRoomName(value)
+      if (value.length < 4) {
+         setRoomName(value)
+      }
    }
 
    const onSaveClick = async () => {
-      await createRoom({
-         variables: { data: { name: roomName } },
-      })
+
+      if (currentRoomId) {
+         await updateRoom({
+            variables: {
+               data: {
+                  roomName,
+                  id: currentRoomId
+               }
+            }
+         })
+      }
+      else {
+         await createRoom({
+            variables: { data: { name: roomName } }, context: { authorization: `Bearer ZALUPA` }
+         })
+      }
       await serializeResponse(currentDoc)
       setIsVisible(false)
    }
@@ -183,10 +206,24 @@ const SequencePage = () => {
          variables: { data: payload },
       })
       await serializeResponse(currentDoc)
+      setCurrentRoomId(``)
+      setRoomName(``)
    }
 
+   const onEditClick = (id: string, roomName: string) => {
+      setIsVisible(true)
+      onRoomNameChange(roomName)
+      setCurrentRoomId(id)
+   }
 
-   console.log(`currentDoc`, currentDoc)
+   const onCrossClick = async (id: string) => {
+      const areYouSure = window.confirm(`Are you sure?`)
+      if (areYouSure) {
+         await deleteRoom({ variables: { data: { id } } })
+         await serializeResponse(currentDoc)
+      }
+   }
+
    return (
       <div className={s.container}>
          {isVisible &&
@@ -215,6 +252,9 @@ const SequencePage = () => {
                      {chosenRooms.length > 0
                         ? chosenRooms.map((d, idx) =>
                            <DndRoomCard
+                              id={d._id}
+                              onEditClick={onEditClick}
+                              onCrossClick={onCrossClick}
                               key={d._id}
                               idx={idx}
                               roomName={d.name}
@@ -243,6 +283,9 @@ const SequencePage = () => {
                         </div>
                         {roomsList.map((d, idx) =>
                            <DndRoomCard
+                              onEditClick={onEditClick}
+                              onCrossClick={onCrossClick}
+                              id={d._id}
                               idx={idx}
                               key={d._id}
                               roomName={d.name}

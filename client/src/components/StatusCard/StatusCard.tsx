@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { UpdateStatusPaylaod } from '../../graphql/allerts'
+
 import EditIcon from '../StuffCard/assets/EditIcon'
 import s from './StatusCard.module.css'
 

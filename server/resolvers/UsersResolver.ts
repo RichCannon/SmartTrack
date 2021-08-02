@@ -23,11 +23,7 @@ export class UsersResolver {
       }])
    }
 
-   // @Query(() => [Users])
-   // async getAllUsers() {
-   //    return await UsersModel.find()
-   // }
-
+  
    @Query(() => [Users])
    async getByRole(@Arg(`role`) role: RoleT) {
       try {

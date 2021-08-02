@@ -1,6 +1,6 @@
-import { ReactElement, useContext, useMemo, useState } from 'react'
-import { AuthContext } from '../../context/AuthContext'
+import { ReactElement, useContext,  useState } from 'react'
 
+import { AuthContext } from '../../context/AuthContext'
 import { RoutesT } from '../../types/types'
 import DrawerTab from '../DrawerTab/DrawerTab'
 import AllertsIcon from './assets/AllertsIcon'
@@ -8,7 +8,6 @@ import DashboardIcon from './assets/DashboardIcon'
 import LogOutIcon from './assets/LogOutIcon'
 import SequenceIcon from './assets/SequenceIcon'
 import StuffIcon from './assets/StuffIcon'
-
 import s from './Drawer.module.css'
 
 
@@ -34,6 +33,7 @@ const Drawer = () => {
    const { logout } = useContext(AuthContext)
 
    const onLogOutPress = () => {
+      document.cookie = ``
       logout()
    }
 

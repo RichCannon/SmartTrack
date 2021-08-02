@@ -18,6 +18,7 @@ export class Users {
    @prop()
    name: string
 
+   
    @Field()
    @prop()
    email: string

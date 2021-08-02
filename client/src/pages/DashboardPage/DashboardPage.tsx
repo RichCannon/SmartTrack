@@ -1,5 +1,5 @@
 import { ApolloCache, FetchResult, useMutation, useQuery } from '@apollo/client'
-import { useCallback, useState } from 'react'
+import {  useState } from 'react'
 
 import DashboardCard from '../../components/DashboardCard/DashboardCard'
 import Modal from '../../components/Modal/Modal'

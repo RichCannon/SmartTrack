@@ -30,14 +30,30 @@ input CreateUserInput {
   specialization: String
 }
 
+input DeleteRoomInput {
+  id: String!
+}
+
+input LoginInput {
+  email: String!
+}
+
+type LoginRespose {
+  isAuth: Boolean!
+  role: String
+}
+
 type Mutation {
   addRoomToDoctor(data: AddRoomToDoctorInput!): Boolean!
   changeAllRoomOwner(data: ChangeAllRoomOwnerInputArr!): Boolean!
   createRoom(data: CreateRoomInput!): Boolean!
   createStatus(data: CreateStatusInput!): Status!
   createUser(data: CreateUserInput!): Users!
+  deleteRoom(data: DeleteRoomInput!): Boolean!
   deleteUser(_id: String!): Boolean!
+  login(data: LoginInput!): LoginRespose!
   setRoomStatus(data: SetRoomStatusInput!): Rooms!
+  updateRoom(data: UpdateRoomInput!): Boolean!
   updateStatus(data: UpdateStatusInput!): Status!
   updateUser(data: UpdateUserInput!): Boolean!
 }
@@ -48,7 +64,6 @@ type Query {
   getAllUsers: [Users!]!
   getByRole(role: String!): [Users!]!
   getRooms(id: String!): [Rooms!]!
-  getRoomsWithoutOneDoc(docId: String!): [Rooms!]!
   getUser(id: String!): Users!
 }
 
@@ -69,6 +84,11 @@ type Status {
   _id: ID!
   color: String!
   description: String!
+}
+
+input UpdateRoomInput {
+  id: String!
+  roomName: String!
 }
 
 input UpdateStatusInput {

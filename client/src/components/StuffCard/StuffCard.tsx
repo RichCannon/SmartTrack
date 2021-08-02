@@ -1,6 +1,5 @@
 import { FC } from 'react'
 
-import { StatusT } from '../../graphql/allerts'
 import { RoomsStuff } from '../../graphql/stuff'
 import DeleteIcon from './assets/DeleteIcon'
 import DoctorIcon from './assets/DoctorIcon'

@@ -1,10 +1,10 @@
 
 import { Types } from "mongoose";
-import { Arg, Resolver, Query, Mutation } from "type-graphql";
+import { Arg, Resolver, Query, Mutation,Authorized } from "type-graphql";
 
 import { Rooms, RoomsModel } from "../entities/Rooms";
 import { StatusModel } from "../entities/Status";
-import { ChangeAllRoomOwnerInputArr, CreateRoomInput, SetRoomStatusInput } from "../types/rooms.input";
+import { ChangeAllRoomOwnerInputArr, CreateRoomInput, DeleteRoomInput, SetRoomStatusInput, UpdateRoomInput } from "../types/rooms.input";
 
 @Resolver()
 export class RoomsResolver {
@@ -20,30 +20,32 @@ export class RoomsResolver {
       return await RoomsModel.find({ ownerId: id })
    }
 
-   @Query(() => [Rooms])
-   async getRoomsWithoutOneDoc(@Arg("docId") docId: string) {
-      try {
-         return await RoomsModel.aggregate([
-            {
-               $match: { ownerId: { $ne: Types.ObjectId(docId) } }
-            },
-            {
-               $lookup: {
-                  from: 'users',
-                  localField: 'ownerId',
-                  foreignField: '_id',
-                  as: 'doc'
-               }
-            }
-         ])
-      } catch (e) {
-         console.error(e)
-         return
-      }
-   }
+
+   // @Query(() => [Rooms])
+   // async getRoomsWithoutOneDoc(@Arg("docId") docId: string) {
+   //    try {
+   //       return await RoomsModel.aggregate([
+   //          {
+   //             $match: { ownerId: { $ne: Types.ObjectId(docId) } }
+   //          },
+   //          {
+   //             $lookup: {
+   //                from: 'users',
+   //                localField: 'ownerId',
+   //                foreignField: '_id',
+   //                as: 'doc'
+   //             }
+   //          }
+   //       ])
+   //    } catch (e) {
+   //       console.error(e)
+   //       return
+   //    }
+   // }
 
 
    @Mutation(() => Boolean)
+   @Authorized()
    async createRoom(@Arg("data") data: CreateRoomInput) {
       try {
          (await RoomsModel.create({ ...data, status: Types.ObjectId("6102a16e15d14362d53dd233") })).save()
@@ -51,6 +53,36 @@ export class RoomsResolver {
 
       } catch (e) {
          console.error(e)
+         return false
+      }
+
+      return true
+   }
+
+   @Mutation(() => Boolean)
+   async updateRoom(@Arg("data") data: UpdateRoomInput) {
+      try {
+         await RoomsModel.updateOne({ _id: data.id }, {
+            $set: {
+               name: data.roomName
+            }
+         })
+
+         return true
+      } catch (e) {
+         console.log(e)
+         return false
+      }
+   }
+
+
+   @Mutation(() => Boolean)
+   async deleteRoom(@Arg("data") data: DeleteRoomInput) {
+      try {
+         await RoomsModel.deleteOne({ _id: data.id })
+         return true
+      } catch (e) {
+         console.log(e)
          return false
       }
    }
@@ -90,8 +122,6 @@ export class RoomsResolver {
                   }
                })
          }
-
-
 
          return true
       } catch (e) {

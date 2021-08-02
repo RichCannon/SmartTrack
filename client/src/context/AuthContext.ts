@@ -7,7 +7,7 @@ const nullfn = () => { }
 export type ContextT = {
    isAuth: boolean
    role: RoleT
-   login: () => void
+   login: (role: RoleT) => void
    logout: () => void
    setRole: (role: RoleT) => void
 }

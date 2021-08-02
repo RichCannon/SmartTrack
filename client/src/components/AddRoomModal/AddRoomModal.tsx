@@ -16,10 +16,10 @@ const AddRoomModal: FC<AddRoomModalP> = ({ roomName, isLoading, onRoomNameChange
    return (
       <div className={s.container}>
          <div className={s.title}>{`Add new room`}</div>
-         <MyInput value={roomName} label={`Name`} onTextChange={onRoomNameChange} />
+         <MyInput errorText={roomName ? null : `Empty`} value={roomName} label={`Name`} onTextChange={onRoomNameChange} />
          <MyButton label={`Save`}
             isLoading={isLoading}
-            isDisabled={isLoading}
+            isDisabled={isLoading || !roomName}
             onButtonClick={onSaveClick}
             className={s.button}
             labelClassName={s.buttonLabel} />

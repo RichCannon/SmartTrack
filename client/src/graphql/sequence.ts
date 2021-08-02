@@ -90,6 +90,41 @@ export const CREATE_ROOM = gql`
    }
 `
 
+export type UpdateRoomResponse = {
+   updateRoom: boolean
+}
+
+export type UpdateRoomPayload = {
+   data: {
+      roomName: string
+      id: string
+   }
+}
+
+export const UPDATE_ROOM = gql`
+   mutation UpdateRoom($data: UpdateRoomInput!) {
+      updateRoom(data: $data)
+   }
+`
+
+export type DeleteRoomResponse = {
+   deleteRoon: boolean
+}
+
+export type DeleteRoomPayload = {
+   data: {
+      id: string
+   }
+}
+
+export const DELETE_ROOM = gql`
+   mutation DeleteRoom($data: DeleteRoomInput!) {
+      deleteRoom(data: $data)
+   }
+`
+
+
+
 export type ChangeAllRoomOwnerPayload = {
    data: {
       docId: string
