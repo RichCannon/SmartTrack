@@ -1,11 +1,12 @@
-import { FC, useState } from 'react'
+import { FC, useRef, useState } from 'react'
 import { useMutation, useQuery } from '@apollo/client'
+import SimpleReactValidator from 'simple-react-validator';
 
 import MyButton from '../../components/MyButton/MyButton'
 import StuffCard from '../../components/StuffCard/StuffCard'
 import { UserT, GetByRolePayload, GET_USER_BY_ROLE } from '../../graphql/dashboard'
-import s from './StuffPage.module.css'
-import { RoleT } from '../../types/types'
+import s from './StuffPage.module.scss'
+import { ErrorValidateT, RoleT } from '../../types/types'
 import Preloader from '../../components/Preloader/Preloader'
 import Modal from '../../components/Modal/Modal'
 import AddUserModal from '../../components/AddUserModal/AddUserModal'
@@ -37,11 +38,19 @@ const variableRoles: VariableRolesT = {
    "Receptionist": `receptionist`
 }
 
+const initError = {
+   email: null,
+   specialization: null,
+   phoneNum: null,
+   name: null,
+}
 
 
 
 const StuffPage: FC = () => {
 
+   const { current: validate } = useRef(new SimpleReactValidator())
+   const [errors, setErrors] = useState<ErrorValidateT>(initError)
    const [route, setRoute] = useState<RouteT>(`Doctors`)
 
    const [email, setEmail] = useState(``)
@@ -63,7 +72,7 @@ const StuffPage: FC = () => {
 
    const [isVisible, setIsVisible] = useState(false)
 
-   const { loading, error, data } = useQuery<ByRoleResponseStuff, GetByRolePayload>(USER_BY_ROLE_STUFF_PAGE, {
+   const { loading, data } = useQuery<ByRoleResponseStuff, GetByRolePayload>(USER_BY_ROLE_STUFF_PAGE, {
       variables: { role: variableRoles[route] }
    })
 
@@ -96,14 +105,23 @@ const StuffPage: FC = () => {
 
 
    const onEmailChange = (value: string) => {
+      if (errors[`email`]) {
+         setErrors({ ...errors, email: null })
+      }
       setEmail(value)
    }
 
    const onPhoneNumChange = (value: string) => {
+      if (errors[`phoneNum`]) {
+         setErrors({ ...errors, phoneNum: null })
+      }
       setPhoneNum(value)
    }
 
    const onNameChange = (value: string) => {
+      if (errors[`name`]) {
+         setErrors({ ...errors, name: null })
+      }
       setName(value)
    }
 
@@ -114,6 +132,9 @@ const StuffPage: FC = () => {
    }
 
    const onSpecializationChange = (value: string) => {
+      if (errors[`specialization`]) {
+         setErrors({ ...errors, specialization: null })
+      }
       setSpecialization(value)
    }
 
@@ -150,30 +171,45 @@ const StuffPage: FC = () => {
 
    }
 
+
+
    const onSaveClick = () => {
 
       const payload = { email, phoneNum, name, role, specialization }
 
-      if (currentEditId) {
-         updateUser({
-            variables: {
-               data: {
-                  _id: currentEditId, ...payload
-               }
-            },
-            refetchQueries: roles.map(role => ({ query: GET_USER_BY_ROLE, variables: { role } }))
-         })
-      }
-      else {
-         createUser({
-            variables: {
-               data: payload
-            },
-            refetchQueries: [{ query: GET_USER_BY_ROLE, variables: { role } }]
-         })
+      validate.message(`email`, email, `required|email`)
+      validate.message(`name`, name, `required|min:4|max:15`)
+      validate.message(`phoneNum`, phoneNum, `required|phone`)
+      if (role === `doctor`) {
+         validate.message(`specialization`, specialization, `required`)
       }
 
+      if (validate.allValid()) {
+         if (currentEditId) {
+            updateUser({
+               variables: {
+                  data: {
+                     _id: currentEditId, ...payload
+                  }
+               },
+               refetchQueries: roles.map(role => ({ query: GET_USER_BY_ROLE, variables: { role } }))
+            })
+         }
+         else {
+            createUser({
+               variables: {
+                  data: payload
+               },
+               refetchQueries: [{ query: GET_USER_BY_ROLE, variables: { role } }]
+            })
+         }
+      }
+      else {
+         setErrors(validate.getErrorMessages())
+      }
    }
+
+   console.log(errors)
 
    const onChangeRoute = (route: RouteT) => {
       setRoute(route)
@@ -186,13 +222,13 @@ const StuffPage: FC = () => {
       setIsVisible(false)
    }
 
-   console.log(data)
 
    return (
       <div className={s.container}>
          {isVisible &&
             <Modal onDismissClick={onDismissClick}>
                <AddUserModal
+                  errors={errors}
                   specialization={specialization}
                   onSpecializationChange={onSpecializationChange}
                   email={email}
@@ -208,18 +244,20 @@ const StuffPage: FC = () => {
                />
             </Modal>
          }
-         <div className={s.routeWrapper}>
-            {routes.map((d, idx) => (
-               <div key={`ROUTE_${idx}`} onClick={() => onChangeRoute(d)} className={`${s.routeTab} ${route === d ? s.routeTabActive : ``}`}>
-                  <div>{d}</div>
-                  {route === d && <div className={s.underLine} />}
-               </div>
-            ))}
+         <div className={s.routeAndButton}>
+            <div className={s.routeWrapper}>
+               {routes.map((d, idx) => (
+                  <div key={`ROUTE_${idx}`} onClick={() => onChangeRoute(d)} className={`${s.routeTab} ${route === d ? s.routeTabActive : ``}`}>
+                     <div>{d}</div>
+                     {route === d && <div className={s.underLine} />}
+                  </div>
+               ))}
+            </div>
+            <MyButton label={`Add new`} onButtonClick={onButtonClick} className={s.button} labelClassName={s.buttonText} />
          </div>
          {loading
             ? <Preloader />
             : <div className={s.content}>
-               <MyButton label={`Add new`} onButtonClick={onButtonClick} className={s.button} labelClassName={s.buttonText} />
                <div>
                   {data && data?.getByRole.map((d, idx) => (
                      <div key={`STUFF_CARD_${idx}`} className={s.stuffCard}>

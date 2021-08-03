@@ -1,9 +1,10 @@
 import { FC } from 'react'
 
+import { ErrorValidateT } from '../../types/types'
 import CrossIcon from '../DndRoomCard/assets/CrossIcon'
 import MyButton from '../MyButton/MyButton'
 import MyInput from '../MyInput/MyInput'
-import s from './AddAllertModal.module.css'
+import s from './AddAllertModal.module.scss'
 
 
 type AddAllertModalP = {
@@ -13,14 +14,15 @@ type AddAllertModalP = {
    onColorClick: (color: string) => void
    onTextChange: (value: string) => void
    onCrossClick: () => void
-   colorName: string
+   name: string
    isLoading?: boolean
+   errors: ErrorValidateT
 }
 
 const AddAllertModal: FC<AddAllertModalP> = ({
    onSaveClick, colors, clickedColor,
-   colorName, onColorClick, onTextChange,
-   onCrossClick, isLoading
+   name, onColorClick, onTextChange,
+   onCrossClick, isLoading,errors
 }) => {
    return (
       <div className={s.container}>
@@ -32,7 +34,7 @@ const AddAllertModal: FC<AddAllertModalP> = ({
          <div className={s.title}>
             {`Add Allert`}
          </div>
-         <MyInput label={`Name`} value={colorName} onTextChange={onTextChange} />
+         <MyInput errorText={errors[`name`]} label={`Name`} value={name} onTextChange={onTextChange} />
          <div className={s.colorTitle}>{`Color`}</div>
          <div className={s.circlesContainer}>
             {colors.map((d, idx) => (

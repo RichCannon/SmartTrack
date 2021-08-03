@@ -1,3 +1,6 @@
+@import "../../scss/mediaVar.scss";
+
+
 .container {
    display: flex;
    width: 95vw;
@@ -55,4 +58,8 @@
    height: auto;
    padding: .5em;
    margin-top: 1em;
+}
+
+@media (min-width: $minMobile) {
+  
 }

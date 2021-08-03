@@ -1,6 +1,8 @@
+@import "../../scss/mediaVar.scss";
+
 .container {
    padding: 1.2em;
-   background-color: #F6F6FF;
+   background-color: #f6f6ff;
    margin-bottom: 1em;
 }
 
@@ -9,20 +11,16 @@
    justify-content: space-between;
 }
 
-.contentWrapper {
-   border-top: 1px solid #C0E7E5;
-   padding-top: 1em;
-}
 
 .name {
-   font-family: 'Poppins';
+   font-family: "Poppins";
    font-style: normal;
    font-weight: 500;
    font-size: 18px;
 }
 
 .reset {
-   border: 1px solid #6AC7BE;
+   border: 1px solid #6ac7be;
    box-sizing: border-box;
    border-radius: 20px;
    display: flex;
@@ -32,17 +30,17 @@
 }
 
 .resetText {
-   font-family: 'Poppins';
+   font-family: "Poppins";
    font-style: normal;
    font-weight: 500;
    font-size: 12px;
-   color: #6AC7BE;
+   color: #6ac7be;
    margin: 0%;
 }
 
 .jobName {
-   color: #4F4F4F;
-   font-family: 'Poppins';
+   color: #4f4f4f;
+   font-family: "Poppins";
    font-style: normal;
    font-weight: 500;
    font-size: 14px;
@@ -50,6 +48,8 @@
 }
 
 .lineWrapper {
+   border-top: 1px solid #c0e7e5;
+   padding-top: 1em;
    display: flex;
    justify-content: space-between;
    align-items: center;
@@ -58,26 +58,26 @@
 .iterator {
    display: flex;
    justify-content: space-between;
-   flex: .5
+   flex: 0.5;
 }
 
 .plusMinus {
-   font-family: 'Poppins';
+   font-family: "Poppins";
    font-style: normal;
    font-weight: 500;
    font-size: 18px;
 }
 
 .iteratorText {
-   font-family: 'Poppins';
+   font-family: "Poppins";
    font-style: normal;
    font-weight: 500;
    font-size: 18px;
-   color: #FC7E55;
+   color: #fc7e55;
 }
 
 .stopLine {
-   border: 1px solid #FC7E55;
+   border: 1px solid #fc7e55;
    box-sizing: border-box;
    border-radius: 20px;
    display: flex;
@@ -87,16 +87,16 @@
 }
 
 .stopLineText {
-   font-family: 'Poppins';
+   font-family: "Poppins";
    font-style: normal;
    font-weight: 500;
    font-size: 12px;
-   color: #FC7E55;
+   color: #fc7e55;
    margin: 0%;
 }
 
 .inLine {
-   font-family: 'Poppins';
+   font-family: "Poppins";
    font-style: normal;
    font-weight: 500;
    font-size: 14px;
@@ -107,8 +107,33 @@
 
 .statusCards {
    margin-top: 2em;
-  padding-bottom: 1em;
+   padding-bottom: 1em;
    display: flex;
    white-space: nowrap;
-   overflow-y:auto;
+   overflow-y: auto;
+}
+
+@media (min-width: $minMobile) {
+   .container {
+      display: flex;
+      flex-direction: row;
+   }
+   .contentWrapper {
+      padding: 0 1em;   
+   }
+
+   .plusMinus {
+      padding: 0 .5em;
+   }
+
+   .statusCards {
+      margin-left: 1em;
+      flex: .65;
+   }
+
+   .infoWrapper {
+      flex: .35;
+      flex-direction: column;
+      display: flex;
+   }
 }

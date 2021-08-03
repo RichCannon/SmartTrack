@@ -1,3 +1,5 @@
+@import "../../scss/mediaVar.scss";
+
 .container {
    padding: 1em;
    background-color: #F6F6FF;
@@ -22,3 +24,17 @@
 
 
 .statusCardWrapper {}
+
+
+@media (min-width: $minMobile) {
+   .button {
+      height: 2em;
+      width: 25vw;
+      align-self: flex-end;
+   }
+
+   .statusCardWrapper {
+      padding: 5vw;
+   } 
+}
+

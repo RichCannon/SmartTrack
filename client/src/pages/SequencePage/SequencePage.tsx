@@ -1,6 +1,7 @@
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useMutation, useQuery } from '@apollo/client'
+import SimpleReactValidator from 'simple-react-validator';
 // @ts-ignore
 import { DragDropContext, Droppable, DropResult } from 'aligned-rbd'
 
@@ -27,6 +28,7 @@ import Preloader from '../../components/Preloader/Preloader'
 import Modal from '../../components/Modal/Modal'
 import AddRoomModal from '../../components/AddRoomModal/AddRoomModal'
 import MyButton from '../../components/MyButton/MyButton'
+import { ErrorValidateT } from '../../types/types';
 
 export type DndRoomCardDataT = {
    idx: number
@@ -66,8 +68,14 @@ type RoomT = {
    docName: string
 }
 
+const initErros = {
+   roomName: null
+}
 
 const SequencePage = () => {
+
+   const { current: validate } = useRef(new SimpleReactValidator())
+   const [errors, setErrors] = useState<ErrorValidateT>(initErros)
    const [currentDoc, setCurrentDoc] = useState<CurrentDocT | null>(null)
 
    const [roomsList, setRoomsList] = useState<RoomT[]>([])
@@ -78,6 +86,9 @@ const SequencePage = () => {
 
    const [isVisible, setIsVisible] = useState(false)
 
+
+   const [roomName, setRoomName] = useState(``)
+   const [currentRoomId, setCurrentRoomId] = useState(``)
 
    const { refetch: getAllDoctors } =
       useQuery<GetDoctorSequenceResponse, GetDoctorSequencePayload>(GET_DOCTORS_SEQUENCE, {
@@ -169,16 +180,22 @@ const SequencePage = () => {
       setCurrentRoomId(``)
    }
 
-   const [roomName, setRoomName] = useState(``)
-   const [currentRoomId, setCurrentRoomId] = useState(``)
-
    const onRoomNameChange = (value: string) => {
+      if (errors['roomName']) {
+         setErrors(e => ({ ...e, roomName: null }))
+      }
       if (value.length < 4) {
          setRoomName(value)
       }
    }
 
    const onSaveClick = async () => {
+      validate.message(`roomName`, roomName, `required|max:3`)
+
+      if (!validate.allValid()) {
+         setErrors(validate.getErrorMessages())
+         return
+      }
 
       if (currentRoomId) {
          await updateRoom({
@@ -199,8 +216,11 @@ const SequencePage = () => {
       setIsVisible(false)
    }
 
+   console.log(errors)
 
    const onSaveRoomsClick = async () => {
+
+
       const payload = { roomsId: chosenRooms.map(d => d._id), docId: currentDoc!.value }
       await changeAllRoomOwner({
          variables: { data: payload },
@@ -229,6 +249,7 @@ const SequencePage = () => {
          {isVisible &&
             <Modal onDismissClick={onDismissClick}>
                <AddRoomModal
+                  errors={errors}
                   onSaveClick={onSaveClick}
                   roomName={roomName}
                   onRoomNameChange={onRoomNameChange}

@@ -1,6 +1,7 @@
 
 import { ApolloCache, FetchResult, useMutation, useQuery } from '@apollo/client'
-import { useState, FC } from 'react'
+import { useState, FC, useRef } from 'react'
+import SimpleReactValidator from 'simple-react-validator';
 
 import AddAllertModal from '../../components/AddAllertModal/AddAllertModal'
 import Modal from '../../components/Modal/Modal'
@@ -11,7 +12,8 @@ import {
    ADD_STATUS, CreateStatusResponse, CreateStatusPaylaod,
    GET_ALL_STATUSES, GetAllStatusesResponse, UpdateStatusPaylaod, StatusT, UPDATE_STATUS, UpdateStatusResponse
 } from '../../graphql/allerts'
-import s from './AllertsPage.module.css'
+import { ErrorValidateT } from '../../types/types';
+import s from './AllertsPage.module.scss'
 
 
 
@@ -32,7 +34,7 @@ const updateStatusUpdateCache = (
    })
 }
 
-const createStatusUpdateCache = (   
+const createStatusUpdateCache = (
    cache: ApolloCache<CreateStatusResponse>,
    { data }: FetchResult<CreateStatusResponse, Record<string, any>, Record<string, any>>) => {
 
@@ -48,6 +50,9 @@ const createStatusUpdateCache = (
    })
 }
 
+const initError = {
+   name: null,
+}
 
 
 
@@ -55,10 +60,15 @@ const colors = [`#EE5897`, `#86E8EE`, `#FA700C`, `#E485F3`, `#C4E6E9`, `#78F275`
 
 const AllertsPage: FC = () => {
 
+   const { current: validate } = useRef(new SimpleReactValidator())
+   const [errors, setErrors] = useState<ErrorValidateT>(initError)
+   const [clickedColor, setClickedColor] = useState<string | null>(`#EE5897`)
+   const [name, setName] = useState(``)
+
    const [currentStatusId, setCurrentStatusId] = useState(``)
 
    const clearState = () => {
-      setColorName(``)
+      setName(``)
       setClickedColor(``)
       setCurrentStatusId(``)
       setIsVisible(false)
@@ -82,8 +92,6 @@ const AllertsPage: FC = () => {
    const { loading, error, data: statusesData } = useQuery<GetAllStatusesResponse>(GET_ALL_STATUSES)
 
 
-   const [clickedColor, setClickedColor] = useState<string | null>(null)
-   const [colorName, setColorName] = useState(``)
 
 
    const [isVisible, setIsVisible] = useState(false)
@@ -98,19 +106,26 @@ const AllertsPage: FC = () => {
    const onEditClick = (payload: StatusT) => {
       setIsVisible(true)
       setClickedColor(payload.color)
-      setColorName(payload.description)
+      setName(payload.description)
       setCurrentStatusId(payload._id)
    }
 
    const onSaveClick = () => {
 
+      validate.message(`name`, name, `required|max:6`)
+
+      if (!validate.allValid()) {
+         setErrors(validate.getErrorMessages())
+         return
+      }
+
       try {
-         if (clickedColor && colorName) {
+         if (clickedColor && name) {
             if (currentStatusId) {
-               updateStatus({ variables: { data: { color: clickedColor, description: colorName, _id: currentStatusId } } })
+               updateStatus({ variables: { data: { color: clickedColor, description: name, _id: currentStatusId } } })
             }
             else {
-               createStatus({ variables: { data: { color: clickedColor, description: colorName } } })
+               createStatus({ variables: { data: { color: clickedColor, description: name } } })
             }
          }
       } catch (e) {
@@ -126,8 +141,12 @@ const AllertsPage: FC = () => {
       clearState()
    }
 
-   const onColorNameChange = (value: string) => {
-      setColorName(value)
+   const onNameChange = (value: string) => {
+      if (errors[`name`]) {
+         setErrors({ ...errors, name: null })
+      }
+      setName(value)
+
    }
 
 
@@ -136,10 +155,11 @@ const AllertsPage: FC = () => {
          {isVisible &&
             <Modal onDismissClick={onDismissClick}>
                <AddAllertModal
+                  errors={errors}
                   isLoading={createStatusLoad || updateStatusLoad}
                   onCrossClick={onDismissClick}
-                  colorName={colorName}
-                  onTextChange={onColorNameChange}
+                  name={name}
+                  onTextChange={onNameChange}
                   onColorClick={onColorClick}
                   clickedColor={clickedColor}
                   colors={colors}

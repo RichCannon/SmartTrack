@@ -4,7 +4,7 @@ import { RoomsStuff } from '../../graphql/stuff'
 import DeleteIcon from './assets/DeleteIcon'
 import DoctorIcon from './assets/DoctorIcon'
 import EditIcon from './assets/EditIcon'
-import s from './StuffCard.module.css'
+import s from './StuffCard.module.scss'
 
 type StuffCardP = {
    number: number
@@ -40,12 +40,14 @@ const StuffCard: FC<StuffCardP> = ({
                   <div onClick={onDoctorClick} className={s.iconWrapper}><DoctorIcon /></div>
                }
             </div>
-            <div className={s.name}>{name}</div>
-            <div className={s.email}>{email}</div>
+            <div className={s.nameAndEmail}>
+               <div className={s.name}>{name}</div>
+               <div className={s.email}>{email}</div>
             <div className={s.phoneNum}>{phoneNum}</div>
+            </div>
             {rooms &&
-               <>
-                  <div className={s.roomsWrapper}>
+               <div className={s.roomsWrapper}>
+                  <div className={s.roomNamesWrapper}>
                      <div>{`Rooms: ${rooms.map(d => d.name).join(`,`)}`}</div>
                   </div>
                   <div className={s.statusesWrapper}>
@@ -55,7 +57,7 @@ const StuffCard: FC<StuffCardP> = ({
                            style={{ background: d.statusData.color ? d.statusData.color : `#ddd` }} />
                      ))}
                   </div>
-               </>
+               </div>
             }
          </div>
       </div>

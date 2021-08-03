@@ -1,3 +1,5 @@
+@import "../../scss/mediaVar.scss";
+
 .tab {
    height: 3.7em;
    border-radius: 20px 0px 0px 20px;
@@ -7,6 +9,7 @@
    padding: 0px 20px;
    flex-direction: row;
    text-decoration: none;
+   overflow: hidden;
 }
 
 .activeTab {
@@ -18,4 +21,13 @@
    font-size: 18px;
    font-family: 'Poppins';
    color: #fff;
+}
+
+@media (min-width: $minMobile) {
+   .tabTextNotExpanded {
+      display: none;
+   }
+   .icon {
+      width: 2em;
+   }
 }

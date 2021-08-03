@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { StatusT } from '../../graphql/allerts'
 
-import s from './SetStatusModal.module.css'
+import s from './SetStatusModal.module.scss'
 
 type SetStatusModalP = {
    alerts: StatusT[]

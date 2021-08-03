@@ -1,0 +1,11 @@
+@import "../../scss/mediaVar.scss";
+
+.container {
+   flex: 1;
+   display: flex;
+   flex-direction: column;
+}
+
+@media (min-width: $minMobile) {
+   
+}

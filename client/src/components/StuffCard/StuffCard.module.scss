@@ -1,0 +1,86 @@
+@import "../../scss/mediaVar.scss";
+
+.container {
+   display: flex;
+   box-shadow: 0px 4px 20px rgba(178, 178, 233, 0.19);
+   border-radius: 20px 0px;
+}
+
+.index {
+   padding: 1em;
+   background-color: #6ac7be4d;
+   border-radius: 20px 0px;
+}
+
+.content {
+   padding: 1em;
+   flex: 1;
+}
+
+.iconsWrapper {
+   display: flex;
+   justify-content: flex-end;
+}
+
+.name {
+   font-family: Poppins;
+   font-size: 16px;
+   font-weight: bold;
+   margin-bottom: 0.5em;
+}
+
+.email {
+   font-family: Poppins;
+   margin-bottom: 0.5em;
+}
+
+.phoneNum {
+   font-family: Poppins;
+   margin-bottom: 0.5em;
+}
+
+.statuses {
+   width: 1em;
+   height: 1em;
+   border-radius: 50%;
+   margin-bottom: 0.5em;
+   font-family: Poppins;
+   margin-right: 0.5em;
+   font-weight: bold;
+}
+
+.roomNamesWrapper {
+   margin-bottom: 0.5em;
+}
+
+.statusesWrapper {
+   display: flex;
+   margin-bottom: 0.5em;
+}
+
+.iconWrapper {
+   margin-left: 2em;
+}
+
+.roomsWrapper {
+   display: flex;
+   flex-direction: column;
+}
+
+.nameAndEmail {
+   display: flex;
+   flex-direction: column;
+}
+
+@media (min-width: $minMobile) {
+   .content {
+      flex-direction: row;
+      display: flex;
+      justify-content: space-between;
+   }
+
+   .iconsWrapper {
+      order: 5;
+   }
+}
+

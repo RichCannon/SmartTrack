@@ -1,0 +1,122 @@
+@import "../../scss/mediaVar.scss";
+
+.container {
+   min-height: 4em;
+   width: 100%;
+   background-color: #212155;
+   position: fixed;
+   top: 0px;
+   bottom: 100%;
+   transition: bottom .5s;
+   box-sizing: border-box;
+   overflow: hidden;
+   z-index: 1;
+}
+
+.expanded {
+   bottom: 0%;
+   transition: bottom .5s;
+}
+
+.logoText {
+   font-family: 'Poppins';
+   font-style: normal;
+   font-weight: 600;
+   font-size: 24px;
+   color: #fff
+}
+
+.header {
+   height: 4em;
+   align-items: center;
+   display: flex;
+   margin: 0px 1em;
+   justify-content: space-between;
+   box-sizing: border-box;
+}
+
+.burger {
+   display: flex;
+   flex-direction: column;
+   justify-content: space-evenly;
+   width: 2em;
+   align-self: stretch;
+   padding: 10px 0px;
+}
+
+.line {
+   height: 2px;
+   display: flex;
+   background-color: #fff;
+   width: 24px;
+}
+
+.midLine {
+   align-self: flex-end;
+}
+
+.signOutWrapper {
+   margin-top: 6em;
+}
+
+.drawerTabscontainer {
+   display: none;
+}
+
+.expandCircle {
+   display: none;
+}
+
+@media (min-width: $minMobile) {
+   .container {
+      width: 13vw;
+      min-height: 100vh;
+      transition: width .5s;
+      overflow: initial
+   }
+   .expanded {
+      width: 30vw;
+      transition: width .5s;
+   }
+   .header {
+      display: flex;
+      flex-direction: column;
+   }
+   .burger {
+      display: none;
+   }
+   .drawerTabscontainer {
+      display: flex;
+      flex-direction: column;
+   }
+   .expandCircle {
+      background: #F6F6FF;
+      box-shadow: 0px 1px 8px rgba(33, 33, 85, 0.16);
+      display: flex;
+      width: 2em;
+      height: 2em;
+      border-radius: 50%;
+      margin: 1em 0;
+      margin-left: calc(100% - 1em);
+      justify-content: center;
+      align-items: center;
+   }
+
+   .arrow {
+      width: .6em;
+      height: .6em;
+      background-color: transparent;
+      border-top-width: 2px;
+      border-right-width: 2px;
+      border-color: #484848;
+      border-top-style: solid;
+      border-right-style: solid;
+      transform: rotateZ(45deg);
+      transition: all .5s;
+   }
+
+   .arrowExpanded {
+      transform: rotateZ(225deg);
+      transition: all .5s;
+   }
+}

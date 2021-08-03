@@ -1,4 +1,4 @@
-import { ReactElement, useContext,  useState } from 'react'
+import { ReactElement, useContext, useState } from 'react'
 
 import { AuthContext } from '../../context/AuthContext'
 import { RoutesT } from '../../types/types'
@@ -8,7 +8,7 @@ import DashboardIcon from './assets/DashboardIcon'
 import LogOutIcon from './assets/LogOutIcon'
 import SequenceIcon from './assets/SequenceIcon'
 import StuffIcon from './assets/StuffIcon'
-import s from './Drawer.module.css'
+import s from './Drawer.module.scss'
 
 
 
@@ -33,7 +33,6 @@ const Drawer = () => {
    const { logout } = useContext(AuthContext)
 
    const onLogOutPress = () => {
-      document.cookie = ``
       logout()
    }
 
@@ -50,9 +49,13 @@ const Drawer = () => {
                <div className={s.line}></div>
             </div>
          </div>
+         <div onClick={() => setIsExpanded(!isExpanded)} className={s.expandCircle}>
+            <div className={`${s.arrow} ${isExpanded ? s.arrowExpanded : ``}`} />
+         </div>
          <div className={isExpanded ? `` : s.drawerTabscontainer}>
             {routesArr.map(d => (
                <DrawerTab
+                  isExpanded={isExpanded}
                   onClick={(() => setIsExpanded(false))}
                   key={`DRAWER_TAB_${d.route}`}
                   icon={d.icon}
@@ -61,7 +64,7 @@ const Drawer = () => {
                />)
             )}
             <div className={s.signOutWrapper}>
-               <DrawerTab preventDefault color={`#8484D8`} label={`Sign Out`} onClick={onLogOutPress} icon={LogOutIcon} />
+               <DrawerTab isExpanded={isExpanded} preventDefault color={`#8484D8`} label={`Sign Out`} onClick={onLogOutPress} icon={LogOutIcon} />
             </div>
          </div>
       </div>

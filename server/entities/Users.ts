@@ -2,6 +2,7 @@
 import { ObjectType, Field, ID } from "type-graphql";
 import { prop, getModelForClass } from "@typegoose/typegoose";
 import { Ref } from "typegoose";
+import { IsEmail, IsPhoneNumber, Max, Min } from "class-validator";
 
 import { RoleT } from "../types/types";
 import { Rooms } from "./Rooms";
@@ -16,23 +17,30 @@ export class Users {
 
    @Field()
    @prop()
+   @Max(16)
+   @Min(4)
    name: string
 
-   
    @Field()
    @prop()
+   password: string
+
+   @Field()
+   @prop({ unique: true })
+   @IsEmail()
    email: string
 
    @Field()
    @prop()
    role: RoleT
 
-   @Field({nullable: true})
+   @Field({ nullable: true })
    @prop({ required: false })
    specialization?: string
 
    @Field()
-   @prop()
+   @prop({ unique: true })
+   @IsPhoneNumber()
    phoneNum: string
 
    @Field(() => [ID], { defaultValue: [] })

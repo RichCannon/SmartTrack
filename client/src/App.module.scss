@@ -1,0 +1,34 @@
+@import "./scss/mediaVar.scss";
+
+.mainContainer {
+   flex-direction: column;
+   display: flex;
+}
+
+.container {
+   display: flex;
+   min-width: 100vw;
+   min-height: calc(100vh - 4em);
+   flex-direction: column;
+   margin-top: 4em;
+}
+
+.authContainer {
+   display: flex;
+   min-width: 100vw;
+   min-height: 100vh;
+   flex-direction: column;
+   background-color: #FAFCFF;
+}
+
+@media (min-width: $minMobile) {
+   .mainContainer {
+      flex-direction: row;
+   }
+   .container {
+      margin-left: 13vw;
+      min-width: 87vw;
+      min-height: 100vh;
+      margin-top: 0;
+   }
+}

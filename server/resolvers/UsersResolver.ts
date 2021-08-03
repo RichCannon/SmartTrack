@@ -1,7 +1,8 @@
 import { Types } from "mongoose";
 import { Arg, Mutation, Query, Resolver } from "type-graphql";
-import { RoomsModel } from "../entities/Rooms";
+import bcrypt from 'bcryptjs'
 
+import { RoomsModel } from "../entities/Rooms";
 import { Users, UsersModel } from "../entities/Users";
 import { RoleT } from "../types/types";
 import { AddRoomToDoctorInput, CreateUserInput, UpdateUserInput } from "../types/users-input";
@@ -23,7 +24,7 @@ export class UsersResolver {
       }])
    }
 
-  
+
    @Query(() => [Users])
    async getByRole(@Arg(`role`) role: RoleT) {
       try {
@@ -82,7 +83,7 @@ export class UsersResolver {
          console.log(e)
          return
       }
-      // console.log(`DATA:`,data)
+
    }
 
    @Query(() => Users, { nullable: false })
@@ -92,7 +93,15 @@ export class UsersResolver {
 
    @Mutation(() => Users)
    async createUser(@Arg("data") data: CreateUserInput) {
-      return (await UsersModel.create(data)).save()
+      try {
+         const password = Math.random().toString(36).slice(-8)
+         const hashedPass = await bcrypt.hash(password, 11)
+         console.log(`password`,password)
+         return (await UsersModel.create({...data, password: hashedPass})).save()
+      } catch (e) {
+         console.error()
+         return e
+      }
    }
 
    @Mutation(() => Boolean)

@@ -36,10 +36,12 @@ input DeleteRoomInput {
 
 input LoginInput {
   email: String!
+  password: String!
 }
 
 type LoginRespose {
   isAuth: Boolean!
+  message: String
   role: String
 }
 
@@ -59,6 +61,7 @@ type Mutation {
 }
 
 type Query {
+  checkToken: LoginRespose!
   getAllRooms: [Rooms!]!
   getAllStatuses: [Status!]!
   getAllUsers: [Users!]!
@@ -111,6 +114,7 @@ type Users {
   docRooms: [Rooms!]
   email: String!
   name: String!
+  password: String!
   phoneNum: String!
   role: String!
   rooms: [ID!]

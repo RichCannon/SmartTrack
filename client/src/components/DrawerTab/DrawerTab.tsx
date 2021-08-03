@@ -1,7 +1,7 @@
 import { FC, memo, ReactElement } from "react"
 import { NavLink, useLocation } from "react-router-dom"
 
-import s from './DrawerTab.module.css'
+import s from './DrawerTab.module.scss'
 import { RoutesT } from "../../types/types"
 
 type DrawerTabP = {
@@ -12,9 +12,10 @@ type DrawerTabP = {
    icon: (isPressed: boolean) => ReactElement
    color?: string
    preventDefault?: boolean
+   isExpanded?: boolean
 }
 
-const DrawerTab: FC<DrawerTabP> = memo(({ routeTo, label, onClick, icon, color, preventDefault }) => {
+const DrawerTab: FC<DrawerTabP> = memo(({ routeTo, label, onClick, icon, color, preventDefault, isExpanded }) => {
 
    const location = useLocation()
 
@@ -31,8 +32,8 @@ const DrawerTab: FC<DrawerTabP> = memo(({ routeTo, label, onClick, icon, color, 
          onClick={onPress}
          activeClassName={`${s.tab} ${s.activeTab}`}
       >
-         {icon(location.pathname === `/${routeTo}`)}
-         <p style={{ color }} className={s.tabText}>{label}</p>
+         <div className={s.icon}>{icon(location.pathname === `/${routeTo}`)}</div>
+         <p style={{ color }} className={`${s.tabText} ${isExpanded ? `` : s.tabTextNotExpanded}`}>{label}</p>
       </NavLink>
    )
 })

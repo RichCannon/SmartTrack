@@ -1,5 +1,5 @@
 import { ApolloCache, FetchResult, useMutation, useQuery } from '@apollo/client'
-import {  useState } from 'react'
+import { useState } from 'react'
 
 import DashboardCard from '../../components/DashboardCard/DashboardCard'
 import Modal from '../../components/Modal/Modal'
@@ -11,7 +11,7 @@ import {
    GET_USER_BY_ROLE, SET_STATUS_TO_ROOM,
    SetStatusRoomResponse, SetStatusRoomPayload
 } from '../../graphql/dashboard'
-import s from './DashboardPage.module.css'
+import s from './DashboardPage.module.scss'
 
 
 
@@ -65,9 +65,7 @@ const DashboardPage = () => {
                : room)
             )
          }
-         : doc)
-
-      )
+         : doc))
 
 
       console.log(`newData`, newData)

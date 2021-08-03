@@ -1,3 +1,5 @@
+@import "../../scss/mediaVar.scss";
+
 .container { 
    display: flex;
    width: 90vw;
@@ -22,7 +24,7 @@
 
 .bigCircle {
    background: rgba(221, 221, 221, 0.19);
-   border: 2px solid rgba(221, 221, 221);
+   border: 2px solid rgba(221, 221, 221, 1);
    box-sizing: border-box;
    display: flex;
    justify-content: center;
@@ -51,4 +53,14 @@
    display: flex;
    align-items: center;
    flex: .8
+}
+
+@media (min-width: $minMobile) {
+   .container {
+      width: fit-content;
+
+   }
+   .bigCircleWrapper {
+      margin-right: 1em;
+   }
 }

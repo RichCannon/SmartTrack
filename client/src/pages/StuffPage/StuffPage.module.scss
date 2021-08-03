@@ -1,13 +1,24 @@
+@import "../../scss/mediaVar.scss";
+
+
+
 .container {
    display: flex;
    flex-direction: column;
    flex: 1
 }
 
+.routeAndButton {
+   display: flex;
+   align-items: center;
+   flex-direction: column;
+}
+
 .routeWrapper {
    display: flex;
    justify-content: space-between;
    margin: .5em 0;
+   width: 100%;
 }
 
 .routeTab {
@@ -37,6 +48,7 @@
 
 .button {
    padding: .5em 0px;
+   width: 80%;
 }
 
 .buttonText {
@@ -44,6 +56,20 @@
    font-size: 16px;
 }
 
-.stuffCard {
+.stuffCard {   
    margin: 1em 0;
+}
+
+
+@media (min-width: $minMobile) {
+   .routeAndButton {
+      flex-direction: row;
+   }
+
+   .button {
+      width: 50%;
+      margin: 1em;
+      height: auto;
+      margin-left: 2em;
+   }
 }
