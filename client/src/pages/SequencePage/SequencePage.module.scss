@@ -1,6 +1,14 @@
+@import "../../scss/mediaVar.scss";
+@import "./SequenceVar.scss";
+@import "../../components/DndRoomCard/DndRoomCardVar.scss";
+@import "../../components/Drawer/DrawerVar.scss";
+@import "../../scss/colorsVar.scss";
+
+
+
 .container {
-   padding: 1em;
-   background-color: #F6F6FF;
+   padding: $paddingCont;
+   background-color: $backgroundGray;
    flex: 1;
    display: flex;
    flex-direction: column;
@@ -63,12 +71,12 @@
 } */
 
 .circlePlusWrapper {
+   @include cardWidth($numOfCardInOneLineMobile, 100vw);
    display: flex;
    justify-content: center;
    align-items: center;
    flex-direction: column;
    margin: 0 6px;
-   width: calc((100vw - ((2 * 1em) + (6px * 6))) / 3 );
    box-sizing: border-box;
 }
 
@@ -107,4 +115,50 @@
 .buttonText {
    color: #fff;
    padding: .5em 0;
+}
+
+.buttonAndSelect {
+   display: flex;
+   flex-direction: column;
+}
+
+.selecAndTitle {
+   display: flex;
+   flex-direction: column;
+
+}
+
+
+@media (min-width: $minMobile) {
+   .circlePlusWrapper {
+      @include cardWidth($numOfCardInOneLineTablet, 100vw - $drawerWidth)
+   }
+
+   .buttonAndSelect {
+      flex-direction: row;
+      justify-content: space-between;
+   }
+
+   .selecAndTitle {
+      width: 50%;
+   }
+
+   .button {
+      display: flex;
+      order: 3;
+      width: 20%;
+      height: 3em;
+   }
+}
+
+@media (min-width: $minLaptop) {
+   .circlePlusWrapper {
+      @include cardWidth($numOfCardInOneLineLaptop, 100vw - $laptopDrawerWidth)
+   }
+}
+
+@media (min-width: $minDesktop) {
+   .circlePlusWrapper {
+      @include cardWidth($numOfCardInOneLineLaptop, 100vw - $desktopDrawerWidth)
+   }
 }

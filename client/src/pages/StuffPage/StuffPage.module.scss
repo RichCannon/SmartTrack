@@ -1,11 +1,13 @@
 @import "../../scss/mediaVar.scss";
+@import "../../scss/colorsVar.scss";
 
 
 
 .container {
    display: flex;
    flex-direction: column;
-   flex: 1
+   flex: 1;
+   background-color: $backgroundGray;
 }
 
 .routeAndButton {
@@ -67,9 +69,13 @@
    }
 
    .button {
-      width: 50%;
+      width: 20%;
       margin: 1em;
-      height: auto;
+      height: 2em;
       margin-left: 2em;
+   }
+
+   .routeWrapper {
+      width: 80%;
    }
 }

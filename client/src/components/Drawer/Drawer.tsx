@@ -29,7 +29,6 @@ const Drawer = () => {
 
    const [isExpanded, setIsExpanded] = useState(false)
 
-   //  const [route, setRoute] = useState<RoutesT>(`Dashboard`)
    const { logout } = useContext(AuthContext)
 
    const onLogOutPress = () => {
@@ -44,15 +43,15 @@ const Drawer = () => {
                {`Logo`}
             </p>
             <div onClick={() => setIsExpanded(!isExpanded)} className={s.burger}>
-               <div className={s.line}></div>
-               <div className={`${s.line} ${s.midLine}`}></div>
-               <div className={s.line}></div>
+               <div className={s.line}/>
+               <div className={`${s.line} ${s.midLine}`}/>
+               <div className={s.line}/>
             </div>
          </div>
          <div onClick={() => setIsExpanded(!isExpanded)} className={s.expandCircle}>
             <div className={`${s.arrow} ${isExpanded ? s.arrowExpanded : ``}`} />
          </div>
-         <div className={isExpanded ? `` : s.drawerTabscontainer}>
+         <div className={isExpanded ? s.laptopDrawerTabCont : s.drawerTabscontainer}>
             {routesArr.map(d => (
                <DrawerTab
                   isExpanded={isExpanded}
@@ -64,7 +63,12 @@ const Drawer = () => {
                />)
             )}
             <div className={s.signOutWrapper}>
-               <DrawerTab isExpanded={isExpanded} preventDefault color={`#8484D8`} label={`Sign Out`} onClick={onLogOutPress} icon={LogOutIcon} />
+               <DrawerTab isExpanded={isExpanded}
+                  preventDefault
+                  color={`#8484D8`}
+                  label={`Sign Out`}
+                  onClick={onLogOutPress}
+                  icon={LogOutIcon} />
             </div>
          </div>
       </div>

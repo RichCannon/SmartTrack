@@ -3,7 +3,7 @@ import { FC } from 'react'
 import { Draggable } from 'aligned-rbd'
 import EditIcon from '../StuffCard/assets/EditIcon'
 import CrossIcon from './assets/CrossIcon'
-import s from './DndRoomCard.module.css'
+import s from './DndRoomCard.module.scss'
 
 type DndRoomCardP = {
    roomName: string

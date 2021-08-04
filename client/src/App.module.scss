@@ -1,4 +1,5 @@
 @import "./scss/mediaVar.scss";
+@import "./components/Drawer/DrawerVar.scss";
 
 .mainContainer {
    flex-direction: column;
@@ -26,9 +27,24 @@
       flex-direction: row;
    }
    .container {
-      margin-left: 13vw;
-      min-width: 87vw;
+      margin-left: $drawerWidth;
+      min-width: calc(100vw - #{$drawerWidth});
       min-height: 100vh;
       margin-top: 0;
+   }
+}
+
+@media (min-width: $minLaptop) {
+   .container {
+      margin-left: $laptopDrawerWidth;
+      min-width: calc(100vw - #{$laptopDrawerWidth});
+   }
+}
+
+
+@media (min-width: $minDesktop) {
+   .container {
+      margin-left: $desktopDrawerWidth;
+      min-width: calc(100vw - #{$desktopDrawerWidth});
    }
 }

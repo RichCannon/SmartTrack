@@ -30,4 +30,14 @@
    .icon {
       width: 2em;
    }
+   .tab {
+      margin-left: 15%;
+   }
+}
+
+@media (min-width: $minLaptop) {
+   .tabTextNotExpanded {
+      display: block;
+   }
+
 }

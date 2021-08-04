@@ -3,7 +3,7 @@ import { ErrorValidateT } from '../../types/types'
 
 import MyButton from '../MyButton/MyButton'
 import MyInput from '../MyInput/MyInput'
-import s from './AddRoomModal.module.css'
+import s from './AddRoomModal.module.scss'
 
 
 type AddRoomModalP = {

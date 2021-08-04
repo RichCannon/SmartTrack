@@ -1,6 +1,6 @@
 
 import { Types } from "mongoose";
-import { Arg, Resolver, Query, Mutation,Authorized } from "type-graphql";
+import { Arg, Resolver, Query, Mutation, Authorized } from "type-graphql";
 
 import { Rooms, RoomsModel } from "../entities/Rooms";
 import { StatusModel } from "../entities/Status";
@@ -9,43 +9,22 @@ import { ChangeAllRoomOwnerInputArr, CreateRoomInput, DeleteRoomInput, SetRoomSt
 @Resolver()
 export class RoomsResolver {
 
-
+   @Authorized()
    @Query(() => [Rooms])
    async getAllRooms() {
       return await RoomsModel.find()
    }
 
+   @Authorized()
    @Query(() => [Rooms])
    async getRooms(@Arg("id") id: string) {
       return await RoomsModel.find({ ownerId: id })
    }
 
 
-   // @Query(() => [Rooms])
-   // async getRoomsWithoutOneDoc(@Arg("docId") docId: string) {
-   //    try {
-   //       return await RoomsModel.aggregate([
-   //          {
-   //             $match: { ownerId: { $ne: Types.ObjectId(docId) } }
-   //          },
-   //          {
-   //             $lookup: {
-   //                from: 'users',
-   //                localField: 'ownerId',
-   //                foreignField: '_id',
-   //                as: 'doc'
-   //             }
-   //          }
-   //       ])
-   //    } catch (e) {
-   //       console.error(e)
-   //       return
-   //    }
-   // }
-
 
    @Mutation(() => Boolean)
-   @Authorized()
+   @Authorized(`doctor`)
    async createRoom(@Arg("data") data: CreateRoomInput) {
       try {
          (await RoomsModel.create({ ...data, status: Types.ObjectId("6102a16e15d14362d53dd233") })).save()
@@ -59,6 +38,7 @@ export class RoomsResolver {
       return true
    }
 
+   @Authorized()
    @Mutation(() => Boolean)
    async updateRoom(@Arg("data") data: UpdateRoomInput) {
       try {
@@ -75,7 +55,7 @@ export class RoomsResolver {
       }
    }
 
-
+   @Authorized()
    @Mutation(() => Boolean)
    async deleteRoom(@Arg("data") data: DeleteRoomInput) {
       try {
@@ -87,6 +67,7 @@ export class RoomsResolver {
       }
    }
 
+   @Authorized()
    @Mutation(() => Rooms)
    async setRoomStatus(@Arg("data") { roomId, statusId }: SetRoomStatusInput) {
       const room = await RoomsModel.findOne({ _id: roomId })
@@ -101,18 +82,17 @@ export class RoomsResolver {
       return { ownerId: room!.ownerId, status: statusId, name: room!.name, _id: roomId, }
    }
 
+   @Authorized()
    @Mutation(() => Boolean)
    async changeAllRoomOwner(@Arg("data") data: ChangeAllRoomOwnerInputArr) {
       try {
 
-
          const rooms = await RoomsModel.find({ ownerId: data.docId })
 
-         const roomFormatted1 = rooms.map(d => ({ roomId: d._id, docId: data.roomsId.includes(d._id) ? data.docId : `` }))
+         const roomFormatted1 = rooms.map(d => ({ roomId: d._id, docId: data.roomsId.includes(d._id) ? data.docId : null }))
          const roomFormatted2 = data.roomsId.filter(d => !rooms.map(f => f._id).includes(d)).map(g => ({ roomId: g, docId: data.docId }))
 
          const roomFormatted = [...roomFormatted1, ...roomFormatted2]
-
 
          for (const d of roomFormatted) {
             await RoomsModel.updateOne({ _id: d.roomId },

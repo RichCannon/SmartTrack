@@ -1,0 +1,13 @@
+@import "../../scss/mediaVar.scss";
+
+
+// $breakpoints: (
+//   $minTablet: 13vw,
+//   $minLaptop: 23vw,
+// );
+
+$drawerWidth: 13vw !default;
+
+$expandedDrawerWidth: 30vw;
+$laptopDrawerWidth: 23vw;
+$desktopDrawerWidth: 13vw;

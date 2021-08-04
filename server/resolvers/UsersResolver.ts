@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { Arg, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Authorized, Mutation, Query, Resolver } from "type-graphql";
 import bcrypt from 'bcryptjs'
 
 import { RoomsModel } from "../entities/Rooms";
@@ -10,7 +10,7 @@ import { AddRoomToDoctorInput, CreateUserInput, UpdateUserInput } from "../types
 
 @Resolver()
 export class UsersResolver {
-
+   @Authorized()
    @Query(() => [Users])
    async getAllUsers() {
       return await UsersModel.aggregate([{
@@ -24,7 +24,7 @@ export class UsersResolver {
       }])
    }
 
-
+   @Authorized(`doctor`)
    @Query(() => [Users])
    async getByRole(@Arg(`role`) role: RoleT) {
       try {
@@ -86,11 +86,13 @@ export class UsersResolver {
 
    }
 
+   @Authorized()
    @Query(() => Users, { nullable: false })
    async getUser(@Arg("id") id: string) {
       return await UsersModel.findById(id)
    }
 
+   @Authorized()
    @Mutation(() => Users)
    async createUser(@Arg("data") data: CreateUserInput) {
       try {
@@ -104,6 +106,7 @@ export class UsersResolver {
       }
    }
 
+   @Authorized()
    @Mutation(() => Boolean)
    async addRoomToDoctor(@Arg("data") { roomId, doctorId }: AddRoomToDoctorInput) {
       await UsersModel.updateOne({ _id: doctorId }, {
@@ -119,6 +122,7 @@ export class UsersResolver {
       return true
    }
 
+   @Authorized()
    @Mutation(() => Boolean)
    async deleteUser(@Arg("_id") _id: string) {
       try {
@@ -130,6 +134,7 @@ export class UsersResolver {
       }
    }
 
+   @Authorized()
    @Mutation(() => Boolean)
    async updateUser(@Arg("data") { _id, ...restData }: UpdateUserInput) {
       try {

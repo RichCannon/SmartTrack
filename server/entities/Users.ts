@@ -36,6 +36,8 @@ export class Users {
 
    @Field({ nullable: true })
    @prop({ required: false })
+   @Max(16)
+   @Min(4)
    specialization?: string
 
    @Field()

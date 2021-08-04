@@ -7,7 +7,7 @@ import MyInput from '../../components/MyInput/MyInput'
 import { AuthContext } from '../../context/AuthContext'
 import { LOGIN, LoginPayload, LoginResponse } from '../../graphql/auth'
 import { ErrorValidateT } from '../../types/types';
-import s from './LoginPage.module.css'
+import s from './LoginPage.module.scss'
 
 const initError = {
    email: null,

@@ -1,4 +1,4 @@
-import { Arg, Resolver, Mutation, Query } from "type-graphql";
+import { Arg, Resolver, Mutation, Query, Authorized } from "type-graphql";
 
 import { StatusModel, Status } from "../entities/Status";
 import { CreateStatusInput, UpdateStatusInput } from "../types/status.input";
@@ -6,11 +6,13 @@ import { CreateStatusInput, UpdateStatusInput } from "../types/status.input";
 @Resolver()
 export class StatusResolver {
 
+   @Authorized()
    @Query(() => [Status])
    async getAllStatuses() {
       return await StatusModel.find()
    }
 
+   @Authorized()
    @Mutation(() => Status)
    async createStatus(@Arg("data") data: CreateStatusInput) {
       try {
@@ -23,6 +25,7 @@ export class StatusResolver {
 
    }
 
+   @Authorized()
    @Mutation(() => Status)
    async updateStatus(@Arg("data") { _id, color, description }: UpdateStatusInput) {
       try {

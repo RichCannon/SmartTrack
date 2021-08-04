@@ -1,0 +1,34 @@
+@import "../../scss/mediaVar.scss";
+
+.container {
+   justify-content: center;
+   display: flex;
+   flex-direction: column;
+   flex: 1;
+   padding: 0px 1em;
+   align-items: center;
+}
+
+.button {
+   width: 6em;
+   height: 3em;
+}
+
+@media (min-width: $minMobile) {
+   .container {
+      padding: 0 20vw;
+   }
+}
+
+
+@media (min-width: $minLaptop) {
+   .container {
+      padding: 0 30vw;
+   }
+}
+
+@media (min-width: $minDesktop) {
+   .container {
+      padding: 0 35vw;
+   }
+}

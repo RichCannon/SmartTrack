@@ -1,0 +1,8 @@
+@import "../../pages/SequencePage/SequenceVar.scss";
+@import "../Drawer/DrawerVar.scss";
+
+$cardMargin: .5em;
+
+@mixin cardWidth($numOfCards, $screenWidth) {
+   width: calc((#{$screenWidth} - ((2 * #{$paddingCont}) + (#{$cardMargin + 0.1} * #{$numOfCards} * 2))) / #{$numOfCards});
+}

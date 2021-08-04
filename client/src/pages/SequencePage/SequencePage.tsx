@@ -6,7 +6,7 @@ import SimpleReactValidator from 'simple-react-validator';
 import { DragDropContext, Droppable, DropResult } from 'aligned-rbd'
 
 import DndRoomCard from '../../components/DndRoomCard/DndRoomCard'
-import s from './SequencePage.module.css'
+import s from './SequencePage.module.scss'
 import MySelect, { OptionsT } from '../../components/MySelect/MySelect'
 import {
    ChangeAllRoomOwnerPayload,
@@ -190,7 +190,7 @@ const SequencePage = () => {
    }
 
    const onSaveClick = async () => {
-      validate.message(`roomName`, roomName, `required|max:3`)
+      validate.message(`roomName`, roomName, `required|alpha_num|max:3`)
 
       if (!validate.allValid()) {
          setErrors(validate.getErrorMessages())
@@ -209,7 +209,7 @@ const SequencePage = () => {
       }
       else {
          await createRoom({
-            variables: { data: { name: roomName } }, context: { authorization: `Bearer ZALUPA` }
+            variables: { data: { name: roomName } }
          })
       }
       await serializeResponse(currentDoc)
@@ -258,64 +258,70 @@ const SequencePage = () => {
          }
          {isLoading || changeAllRoomLoading
             ? <Preloader />
-            : <DragDropContext
-               onDragEnd={onDrop}>
-               <MyButton label={`Save`} onButtonClick={onSaveRoomsClick} labelClassName={s.buttonText} />
-               <div className={s.title}>{`Choose a Doctor`}</div>
-               <div className={s.select}>
-                  <MySelect onChange={onChange} value={currentDoc} options={docOptions} />
-               </div>
-               <Droppable direction={`grid`} droppableId={FIELD_TO_ADD_ROOM}>
-                  {(provided: any) => <div
-                     {...provided.droppableProps}
-                     ref={provided.innerRef}
-                     className={s.dndContainer}>
-                     {chosenRooms.length > 0
-                        ? chosenRooms.map((d, idx) =>
-                           <DndRoomCard
-                              id={d._id}
-                              onEditClick={onEditClick}
-                              onCrossClick={onCrossClick}
-                              key={d._id}
-                              idx={idx}
-                              roomName={d.name}
-                              doctor={currentDoc!.label} />)
-                        : <div className={s.dndCenterText}>{`Drag and Drop rooms to the box`}</div>
-                     }
-                     {provided.placeholder}
+            : <>
+               <div className={s.buttonAndSelect}>
+                  <MyButton label={`Save`} onButtonClick={onSaveRoomsClick} className={s.button} labelClassName={s.buttonText} />
+                  <div className={s.selecAndTitle}>
+                     <div className={s.title}>{`Choose a Doctor`}</div>
+                     <div className={s.select}>
+                        <MySelect onChange={onChange} value={currentDoc} options={docOptions} />
+                     </div>
                   </div>
-                  }
-               </Droppable>
-               <div className={s.dndTitle}>
-                  {`Drag and Drop rooms to the box`}
                </div>
-               <Droppable direction={`grid`} droppableId={FIELD_WITH_AVAIB_ROOMS}>
-                  {(provided: any) =>
-                     <div
+               <DragDropContext
+                  onDragEnd={onDrop}>
+                  <Droppable direction={`grid`} droppableId={FIELD_TO_ADD_ROOM}>
+                     {(provided: any) => <div
                         {...provided.droppableProps}
                         ref={provided.innerRef}
-                        className={s.dndCardWrapper}>
-                        <div onClick={onAddRoomClick} className={s.circlePlusWrapper}>
-                           <div className={s.circlePlus}>
-                              <div className={s.plus} />
-                              <div className={s.minus} />
-                           </div>
-                           <div className={s.addText}>{`Add a room`}</div>
-                        </div>
-                        {roomsList.map((d, idx) =>
-                           <DndRoomCard
-                              onEditClick={onEditClick}
-                              onCrossClick={onCrossClick}
-                              id={d._id}
-                              idx={idx}
-                              key={d._id}
-                              roomName={d.name}
-                              doctor={d.docName} />)
+                        className={s.dndContainer}>
+                        {chosenRooms.length > 0
+                           ? chosenRooms.map((d, idx) =>
+                              <DndRoomCard
+                                 id={d._id}
+                                 onEditClick={onEditClick}
+                                 onCrossClick={onCrossClick}
+                                 key={d._id}
+                                 idx={idx}
+                                 roomName={d.name}
+                                 doctor={currentDoc!.label} />)
+                           : <div className={s.dndCenterText}>{`Drag and Drop rooms to the box`}</div>
                         }
                         {provided.placeholder}
-                     </div>}
-               </Droppable>
-            </DragDropContext>}
+                     </div>
+                     }
+                  </Droppable>
+                  <div className={s.dndTitle}>
+                     {`Drag and Drop rooms to the box`}
+                  </div>
+                  <Droppable direction={`grid`} droppableId={FIELD_WITH_AVAIB_ROOMS}>
+                     {(provided: any) =>
+                        <div
+                           {...provided.droppableProps}
+                           ref={provided.innerRef}
+                           className={s.dndCardWrapper}>
+                           <div onClick={onAddRoomClick} className={s.circlePlusWrapper}>
+                              <div className={s.circlePlus}>
+                                 <div className={s.plus} />
+                                 <div className={s.minus} />
+                              </div>
+                              <div className={s.addText}>{`Add a room`}</div>
+                           </div>
+                           {roomsList.map((d, idx) =>
+                              <DndRoomCard
+                                 onEditClick={onEditClick}
+                                 onCrossClick={onCrossClick}
+                                 id={d._id}
+                                 idx={idx}
+                                 key={d._id}
+                                 roomName={d.name}
+                                 doctor={d.docName} />)
+                           }
+                           {provided.placeholder}
+                        </div>}
+                  </Droppable>
+               </DragDropContext>
+            </>}
       </div >
    )
 }

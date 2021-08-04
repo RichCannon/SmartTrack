@@ -32,3 +32,11 @@
       width: 50vw;
    }
 }
+
+
+@media (min-width: $minLaptop) {
+   .container {
+      width: 35vw;
+   }
+}
+

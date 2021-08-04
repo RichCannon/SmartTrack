@@ -1,3 +1,5 @@
+@import "../../scss/mediaVar.scss";
+
 .container {
    display: flex;
    width: 90vw;
@@ -25,5 +27,24 @@
    height: auto;
    padding: .5em;
    margin-top: 1em;
+}
+
+@media (min-width: $minMobile) {
+   .container {
+      width: 60vw;
+   }
+}
+
+@media (min-width: $minLaptop) {
+   .container {
+      width: 50vw;
+   }
+}
+
+
+@media (min-width: $minDesktop) {
+   .container {
+      width: 30vw;
+   }
 }
 

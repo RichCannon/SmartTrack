@@ -1,10 +1,14 @@
 @import "../../scss/mediaVar.scss";
 
+@mixin circleColorSize($modalWidth) {
+   width: calc((#{$modalWidth} - (2 * 1.2em)) / 4);
+   height: calc((#{$modalWidth} - (2 * 1.2em)) / 4);
+}
 
 .container {
    display: flex;
    width: 95vw;
-   background: #FFFFFF;
+   background: #ffffff;
    box-shadow: 0px 4px 20px rgba(32, 43, 93, 0.12);
    border-radius: 20px;
    flex-direction: column;
@@ -30,7 +34,7 @@
 }
 
 .circleWrapper {
-   width: calc((95vw - (2* 1.2em)) / 4);
+   width: calc((95vw - (2 * 1.2em)) / 4);
    height: calc((95vw - (2 * 1.2em)) / 4);
    justify-content: center;
    align-items: center;
@@ -43,7 +47,8 @@
    height: 80%;
 }
 
-.clickedCircle {}
+.clickedCircle {
+}
 
 .colorTitle {
    font-weight: normal;
@@ -51,15 +56,41 @@
 }
 
 .buttonLabel {
-   color: #fff
+   color: #fff;
 }
 
 .button {
    height: auto;
-   padding: .5em;
+   padding: 0.5em;
    margin-top: 1em;
 }
 
 @media (min-width: $minMobile) {
-  
+   .container {
+      width: 50vw;
+   }
+
+   .circleWrapper {
+      @include circleColorSize(50vw)
+   }
+}
+
+@media (min-width: $minLaptop) {
+   .container {
+      width: 30vw;
+   }
+
+   .circleWrapper {
+      @include circleColorSize(30vw)
+   }
+}
+
+@media (min-width: $minDesktop) {
+   .container {
+      width: 25vw;
+   }
+
+   .circleWrapper {
+      @include circleColorSize(25vw)
+   }
 }

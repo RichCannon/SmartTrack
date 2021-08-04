@@ -25,7 +25,7 @@ const DashboardCard: FC<DashboardCardP> = ({ name, specialization, docRooms, onR
             <div className={s.lineWrapper}>
                <div className={s.iterator}>
                   <div className={s.plusMinus}>{`-`}</div>
-                  <div className={s.iteratorText}>{`5`}</div>
+                  <div className={s.iteratorText}>{docRooms.length}</div>
                   <div className={s.plusMinus}>{`+`}</div>
                   <div className={s.inLine}>{`in line`}</div>
                </div>

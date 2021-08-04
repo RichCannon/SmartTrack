@@ -43,12 +43,12 @@ const StuffCard: FC<StuffCardP> = ({
             <div className={s.nameAndEmail}>
                <div className={s.name}>{name}</div>
                <div className={s.email}>{email}</div>
-            <div className={s.phoneNum}>{phoneNum}</div>
+               <div className={s.phoneNum}>{phoneNum}</div>
             </div>
             {rooms &&
                <div className={s.roomsWrapper}>
                   <div className={s.roomNamesWrapper}>
-                     <div>{`Rooms: ${rooms.map(d => d.name).join(`,`)}`}</div>
+                     <div>{`Rooms:`}</div>{rooms.map((d, idx) => <div>{d.name + (idx === rooms.length - 1 ? '' : `,`)}</div>)}
                   </div>
                   <div className={s.statusesWrapper}>
                      {rooms.map((d, idx) => (

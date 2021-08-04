@@ -13,7 +13,6 @@ import StuffPage from './pages/StuffPage/StuffPage';
 
 
 
-//const uri = `http://localhost:5000`
 
 
 const App = () => {
@@ -61,7 +60,8 @@ const App = () => {
                         </Switch>
                      </div>
                }</>
-                  : <Preloader />}
+                  : <Preloader />
+               }
             </BrowserRouter>
          </AuthContext.Provider>
       </div >

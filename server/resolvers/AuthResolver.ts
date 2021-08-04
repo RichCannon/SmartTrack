@@ -3,11 +3,10 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 
 import { UsersModel } from "../entities/Users";
-import { MyContextT } from "../types/types";
+import { MyContextT, SECRET_KEY, TokenDataT } from "../types/types";
 import { LoginInput } from "../types/auth-input";
 import { getCookie } from "../utils/getCookie";
 
-const SECRET_KEY = `verySecretKey`
 
 
 @ObjectType()
@@ -33,8 +32,6 @@ export class AuthResolver {
          if (!user) {
             return { role: null, isAuth: false, message: `User doesn't exist` }
          }
-
-
          const isMatchPass = await bcrypt.compare(password, user.password)
 
          if (!isMatchPass) {
@@ -42,7 +39,7 @@ export class AuthResolver {
          }
 
          const token = jwt.sign(
-            { userId: user._id },
+            { userId: user._id, role: user.role },
             SECRET_KEY,
             { expiresIn: `30d` }
          )
@@ -67,7 +64,7 @@ export class AuthResolver {
             return { role: null, isAuth: false, message: `No token` }
          }
 
-         const { userId } = jwt.verify(token, SECRET_KEY) as { userId: string, role: string }
+         const { userId } = jwt.verify(token, SECRET_KEY) as TokenDataT
 
          const user = await UsersModel.findOne({ _id: userId })
 

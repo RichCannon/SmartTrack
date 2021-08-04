@@ -1,7 +1,7 @@
 @import "../../scss/mediaVar.scss";
 
 .container {
-   padding: 1.2em;
+   padding: 1.2em 0 1.2em 1.2em;
    background-color: #f6f6ff;
    margin-bottom: 1em;
 }
@@ -137,3 +137,15 @@
       display: flex;
    }
 }
+
+
+@media (min-width: $minDesktop) {
+   .statusCards {
+      flex: .80;
+   }
+
+   .infoWrapper {
+      flex: .20;
+   }
+}
+

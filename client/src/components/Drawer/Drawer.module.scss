@@ -1,4 +1,5 @@
 @import "../../scss/mediaVar.scss";
+@import "./DrawerVar.scss";
 
 .container {
    min-height: 4em;
@@ -11,6 +12,8 @@
    box-sizing: border-box;
    overflow: hidden;
    z-index: 1;
+   display: flex;
+   flex-direction: column;
 }
 
 .expanded {
@@ -69,14 +72,14 @@
 
 @media (min-width: $minMobile) {
    .container {
-      width: 13vw;
+      max-width: $drawerWidth;
       min-height: 100vh;
-      transition: width .5s;
-      overflow: initial
+      transition: max-width .5s;
+      overflow: initial;
+      
    }
    .expanded {
-      width: 30vw;
-      transition: width .5s;
+      max-width: 30vw;
    }
    .header {
       display: flex;
@@ -119,4 +122,30 @@
       transform: rotateZ(225deg);
       transition: all .5s;
    }
+}
+
+
+@media (min-width: $minLaptop) {
+   .container {
+      max-width: none;
+      min-height: 100vh;
+      width: $laptopDrawerWidth;
+   }
+
+   .expandCircle {
+      opacity: 0;
+   }
+}
+
+@media (min-width: $minDesktop) {
+   .container {
+      max-width: none;
+      min-height: 100vh;
+      width: $desktopDrawerWidth;
+   }
+
+   .expandCircle {
+      opacity: 0;
+   }
+
 }
