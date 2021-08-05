@@ -63,6 +63,6 @@
 
 @media (min-width: $minDesktop) {
    .container {
-      @include cardWidth($numOfCardInOneLineLaptop, calc(100vw - #{$desktopDrawerWidth}));
+      @include cardWidth($numOfCardInOneLineDesktop, calc(100vw - #{$desktopDrawerWidth}));
    }
 }

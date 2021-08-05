@@ -161,4 +161,8 @@
    .circlePlusWrapper {
       @include cardWidth($numOfCardInOneLineLaptop, 100vw - $desktopDrawerWidth)
    }
+
+   .select {
+      width: 50%;
+   }
 }

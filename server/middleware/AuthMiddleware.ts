@@ -3,26 +3,34 @@ import jwt from 'jsonwebtoken'
 
 import { MyContextT, SECRET_KEY, TokenDataT } from "../types/types";
 import { getCookie } from "../utils/getCookie";
+import { UsersModel } from "../entities/Users";
 
 
-export const customAuthChecker: AuthChecker<MyContextT> = ({ context: { req } }, roles) => {
+export const customAuthChecker: AuthChecker<MyContextT> = async ({ context: { req } }, roles) => {
 
-   const token = getCookie(`token`, req.headers.cookie ? req.headers.cookie : ``)
+   try {
 
-   if (!token) {
-      return false
-   }
+      const token = getCookie(`token`, req.headers.cookie ? req.headers.cookie : ``)
 
-   const tokenData = jwt.verify(token, SECRET_KEY) as TokenDataT
+      if (!token) {
+         throw new Error(`No token`)
+      }
 
-   if (tokenData.role === `admin`) {
+      const tokenData = jwt.verify(token, SECRET_KEY) as TokenDataT
+      const user = await UsersModel.findOne({ _id: tokenData.userId })
+
+      if (!user) {
+         throw new Error(`No user`)
+      }
+
+      if (!roles.includes(tokenData.role) && tokenData.role !== `admin`) {
+         throw new Error(`Role check false`)
+      }
+
       return true
-   }
-
-   if (!roles.includes(tokenData.role)) {
+   } catch (e) {
+      console.error(e)
       return false
    }
-
-   return true
 
 };
